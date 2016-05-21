@@ -1,0 +1,10 @@
+cmake_minimum_required(VERSION 2.8)
+project(captcha_basic)
+find_package(OpenCV REQUIRED)
+aux_source_directory(./ PRESENT_DIR)
+add_executable(captcha_basic ${PRESENT_DIR})
+target_link_libraries(captcha_basic ${OpenCV_LIBS})
+
+include_directories (/usr/local/opt/leptonica/include)
+link_directories (/usr/local/opt/leptonica/lib)
+target_link_libraries (captcha_basic lept tesseract)

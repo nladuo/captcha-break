@@ -1,7 +1,7 @@
 # Weibo.cn
 CAPTCHA from http://login.weibo.cn/login/
 ## captcha image
-![](./weibo.cn/weibo.cn.png)
+![](./weibo.cn.png)
 ## status 
 building...  
 ## technique

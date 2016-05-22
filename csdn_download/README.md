@@ -1,8 +1,7 @@
 # CSDN Download
 CAPTCHA from http://download.csdn.net/
 ## captcha image
-type1: ![](./csdn1.png)  
-type2: ![](./csdn2.png)
+![](./csdn.png)  
 ## status
 building...
 ## technique

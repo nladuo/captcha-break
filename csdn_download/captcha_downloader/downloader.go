@@ -6,10 +6,10 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
+	"image/png"
 	"io"
 	"net/http"
 	"os"
-	// "time"
 )
 
 func getMd5String(s string) string {
@@ -29,8 +29,7 @@ func getGuid() string {
 }
 
 func main() {
-	for i := 0; i < 200; i++ {
-		// time.Sleep(30 * time.Second)
+	for i := 0; i < 50; i++ {
 		resp, err := http.Get("http://download.csdn.net/index.php/rest/tools/validcode/source_ip_validate/10.5711163911089325")
 		if err != nil {
 			continue
@@ -43,7 +42,20 @@ func main() {
 		}
 		io.Copy(file, resp.Body)
 		resp.Body.Close()
-		fmt.Println(filename)
+		captcha_file, _ := os.Open(filename)
+		image, err := png.Decode(captcha_file)
+		if err != nil {
+			continue
+		}
+		fmt.Println("bounds", image.Bounds())
+		//There are two kinds of captcha, we choose 48*20 pixel one.
+		if (image.Bounds().Dx() != 48) && (image.Bounds().Dy() != 20) {
+			os.Remove(filename)
+			i--
+		} else {
+			fmt.Println("save ", filename)
+		}
+
 	}
 
 }

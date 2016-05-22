@@ -9,8 +9,7 @@ split the letter averagely, and use KNN to recognize the letter.
 ## Steps
 ### 1.download the captcha  
 ``` shell
-rm -r ./downloader/vocdes
-mkdir ./downloader/vcodes
+rm ./downloader/vocdes/*
 go run ./downloader/downloader.go
 ```
 ### 2.split the letter from captcha  

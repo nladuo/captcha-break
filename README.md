@@ -4,7 +4,7 @@ captcha break based on opencv2, tesseract-ocr and some machine learning algorith
 ## Types
 ### [Basic](./basic)
 The simplest captcha breaking.
-### [CSDN Download](./csdn_download)
+### [CSDN](./csdn)
 CAPTCHA from http://download.csdn.net/
 ### [Weibo.cn](./weibo.cn)
 CAPTCHA from http://login.weibo.cn/login/

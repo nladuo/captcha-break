@@ -1,4 +1,4 @@
-#include "ocrdecoder.h"
+#include "ocr_decoder.h"
 
 void OCRDecoder::decodeGrayMat (cv::Mat mat, char *result)
 {

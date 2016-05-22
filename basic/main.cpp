@@ -2,7 +2,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/core/core.hpp>
-#include "ocrdecoder.h"
+#include "ocr_decoder.h"
 
 using namespace cv;
 using namespace std;
@@ -17,5 +17,4 @@ int main()
     OCRDecoder decoder;
     decoder.decodeGrayMat(threshold_mat, buffer);
     cout<<"result:"<<buffer<<endl;
-
 }

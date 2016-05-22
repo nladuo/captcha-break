@@ -19,7 +19,7 @@ cd ./spliter && cmake . && make
 python ./spliter_run.py
 ```
 ### 3.recognize the letter by human, create the dataset.  
-You can check the result at ./recognizer/dataset
+You can check the result at [./recognizer/dataset](./recognizer/dataset)
 
 ### 4.test the recognizer
 ```

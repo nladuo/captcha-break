@@ -1,7 +1,7 @@
 # CSDN Download
 CAPTCHA from http://download.csdn.net/
 ## captcha image
-![](./csdn.png)  
+![](./jikexueyuan.png)  
 ## status
 building.
 ## technique

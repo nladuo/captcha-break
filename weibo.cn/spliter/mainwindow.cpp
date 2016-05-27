@@ -213,6 +213,21 @@ bool find_white_point(cv::Mat image, cv::Point_<uchar>& point)
     return false;
 }
 
+void differential_process(cv::Mat& mat)
+{
+    cv::Mat clone_mat = mat.clone();
+    for(int i = 0; i < mat.size().width - 1; i++){
+        for(int j = 0; j < mat.size().height; j++){
+            if(clone_mat.at<uchar>(j, i) != clone_mat.at<uchar>(j, i+1)){
+                mat.at<uchar>(j, i) = 0;
+            }else{
+                mat.at<uchar>(j, i) = 255;
+            }
+        }
+    }
+
+}
+
 void MainWindow::on_pushButton_clicked()
 {
     QString filename = QFileDialog::getOpenFileName (this,
@@ -242,14 +257,17 @@ void MainWindow::on_pushButton_clicked()
     captcha_utils.clear_peper_noise(thresholded_img, 2);
     cv::imshow("clear peper:", thresholded_img);
 
-    int splits[8];
-    captcha_utils.vertical_project (thresholded_img, splits);
-    for(int i = 0; i < 8; i++){
-        std::cout<<i<<" "<<splits[i]<<std::endl;
-        cv::line (thresholded_img, cv::Point(splits[i], 0), cv::Point(splits[i], 19), cv::Scalar(0));
-    }
+    differential_process(thresholded_img);
+    cv::imshow("微分", thresholded_img);
 
-    cv::imshow ("split", thresholded_img);
+//    int splits[8];
+//    captcha_utils.vertical_project (thresholded_img, splits);
+//    for(int i = 0; i < 8; i++){
+//        std::cout<<i<<" "<<splits[i]<<std::endl;
+//        cv::line (thresholded_img, cv::Point(splits[i], 0), cv::Point(splits[i], 19), cv::Scalar(0));
+//    }
+
+//    cv::imshow ("split", thresholded_img);
 
     //导出
 //    std::string uuid = QUuid::createUuid().toString().toStdString();

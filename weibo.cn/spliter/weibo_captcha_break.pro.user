@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 3.6.1, 2016-05-21T13:28:47. -->
+<!-- Written by QtCreator 3.6.1, 2016-05-25T19:35:45. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -301,8 +301,8 @@
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">weibo_captcha_break</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/Users/kalen/Workspace/cpp-program/weibo.cn-captcha-break/weibo_captcha_break/weibo_captcha_break.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">weibo_captcha_break2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/Users/kalen/Workspace/cpp-program/captcha-break/weibo.cn/spliter/weibo_captcha_break.pro</value>
     <value type="bool" key="QmakeProjectManager.QmakeRunConfiguration.UseLibrarySearchPath">true</value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.CommandLineArguments"></value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.ProFile">weibo_captcha_break.pro</value>

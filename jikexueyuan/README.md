@@ -1,5 +1,5 @@
-# CSDN Download
-CAPTCHA from http://download.csdn.net/
+# Jikexueyuan
+CAPTCHA from http://passport.jikexueyuan.com/sso/login
 ## captcha image
 ![](./jikexueyuan.png)  
 ## status

@@ -7,7 +7,7 @@ The simplest captcha breaking.
 ### [CSDN](./csdn)
 CAPTCHA from http://download.csdn.net/
 ### [Jikexueyuan](./jikexueyuan)
-CAPTCHA from http://jikexueyuan.com
+CAPTCHA from http://passport.jikexueyuan.com/sso/login
 ### [Weibo.cn](./weibo.cn)
 CAPTCHA from http://login.weibo.cn/login/
 ## License

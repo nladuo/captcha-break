@@ -30,6 +30,6 @@ INCLUDEPATH += /usr/local/include \
                 /usr/local/include/opencv \
                 /usr/local/include/opencv2
 
-LIBS += /usr/local/lib/libopencv_highgui.dylib \
-        /usr/local/lib/libopencv_core.dylib    \
-        /usr/local/lib/libopencv_imgproc.dylib
+LIBS += /usr/local/lib/libopencv_highgui.so \
+        /usr/local/lib/libopencv_core.so    \
+        /usr/local/lib/libopencv_imgproc.so

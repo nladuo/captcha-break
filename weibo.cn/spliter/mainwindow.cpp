@@ -228,10 +228,15 @@ void differential_process(cv::Mat& mat)
 
 }
 
+void save_image(cv::Mat &image)
+{
+
+}
+
 void MainWindow::on_pushButton_clicked()
 {
     QString filename = QFileDialog::getOpenFileName (this,
-                    tr("Open img"), "/Users/kalen/Pictures/captchas",
+                    tr("Open img"), "/home/kalen/Pictures/captchas",
                     tr("Image files (*.png *.jpg *.jpeg *.bmp)"));
 
     if(filename.size () == 0) return;
@@ -257,29 +262,30 @@ void MainWindow::on_pushButton_clicked()
     captcha_utils.clear_peper_noise(thresholded_img, 2);
     cv::imshow("clear peper:", thresholded_img);
 
-    differential_process(thresholded_img);
-    cv::imshow("微分", thresholded_img);
 
-//    int splits[8];
-//    captcha_utils.vertical_project (thresholded_img, splits);
-//    for(int i = 0; i < 8; i++){
-//        std::cout<<i<<" "<<splits[i]<<std::endl;
-//        cv::line (thresholded_img, cv::Point(splits[i], 0), cv::Point(splits[i], 19), cv::Scalar(0));
-//    }
+    int splits[8];
+    captcha_utils.vertical_project (thresholded_img, splits);
+    cv::Mat clone_mat = thresholded_img.clone();
+    for(int i = 0; i < 8; i++){
+        std::cout<<i<<" "<<splits[i]<<std::endl;
+        cv::line (clone_mat, cv::Point(splits[i], 0), cv::Point(splits[i], 20), cv::Scalar(0));
+    }
+    cv::imshow ("split", clone_mat);
+    if(splits[7] < 100){
+        for(int i = 0; i < 8; i += 2){
+            cv::Rect rect(cv::Point(splits[i], 0), cv::Point(splits[i+1], 20));
+            cv::Mat mat = thresholded_img(rect);
+            cv::imwrite(QUuid().createUuid().toString().toStdString() + ".png", mat);
+        }
+    }
 
-//    cv::imshow ("split", thresholded_img);
+
 
     //导出
 //    std::string uuid = QUuid::createUuid().toString().toStdString();
 //    std::string outFile = "/Users/kalen/" + uuid + ".png";
 //    cv::imwrite(outFile, thresholded_img);
 
-
-//    float scale = 0.5;
-//    cv::Size dsize = cv::Size(image.cols*scale,image.rows*scale);
-//    cv::Mat resize_image = cv::Mat(dsize,CV_8U);
-//    cv::resize(thresholded_img, resize_image, dsize);
-//    cv::imshow ("resize", resize_image);
 
 
 

@@ -3,12 +3,13 @@ captcha break based on opencv2, tesseract-ocr and some machine learning algorith
 
 ## Types
 ### [Basic](./basic)
+![](./basic/basic.jpg)  
 The simplest captcha breaking.
 ### [CSDN](./csdn)
+![](./csdn/csdn.png)  
 CAPTCHA from http://download.csdn.net/
-### [Jikexueyuan](./jikexueyuan)
-CAPTCHA from http://passport.jikexueyuan.com/sso/login
 ### [Weibo.cn](./weibo.cn)
+![](./weibo.cn/weibo.cn.png)  
 CAPTCHA from http://login.weibo.cn/login/
 ## License
 MIT

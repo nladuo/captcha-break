@@ -66,7 +66,7 @@ void fill_loss_contours(cv::Mat &image)
     //先找连通域
     using namespace std;
     using namespace cv;
-    vector<vector<Point>> areas;
+    vector<vector<Point> > areas;
     vector<Point> tranversed_points;
     for(int i = 0; i < image.size().width; i++){
         for(int j = 0; j < image.size().height; j++){
@@ -97,7 +97,7 @@ void CaptchaUtils::clear_peper_noise (cv::Mat &image, int max_adhesion_count)
     //先找连通域
     using namespace std;
     using namespace cv;
-    vector<vector<Point>> areas;
+    vector<vector<Point> > areas;
     vector<Point> tranversed_points;
     for(int i = 0; i < image.size().width; i++){
         for(int j = 0; j < image.size().height; j++){

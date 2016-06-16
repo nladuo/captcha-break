@@ -3,6 +3,8 @@ project(spliter)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 find_package(OpenCV REQUIRED)
+find_package(Boost REQUIRED)
 aux_source_directory(./ SOURCE_DIR)
 add_executable(spliter ${SOURCE_DIR})
 target_link_libraries(spliter ${OpenCV_LIBS})
+target_link_libraries(spliter ${Boost_LIBRARIES})

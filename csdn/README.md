@@ -15,6 +15,7 @@ go run ./downloader/downloader.go
 ### 2.split the letter from captcha  
 ``` shell
 cd ./spliter && cmake . && make
+mkdir letters
 python ./spliter_run.py
 ```
 ### 3.recognize the letter by human, create the dataset.  

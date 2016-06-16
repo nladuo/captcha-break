@@ -3,7 +3,7 @@
 int main(int argc, char *argv[])
 {
     if(argc != 2) {
-        fprintf(stderr, "Usage: ./spliter <image_filename> <output_filenames>[4]\n");
+        fprintf(stderr, "Usage: ./spliter <image_filename>\n");
         return 1;
     }
     Spliter spliter("./dataset/");

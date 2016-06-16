@@ -8,6 +8,4 @@ for file in files:
     if file.split('.')[-1] == 'png':
         filename = "../downloader/vcodes/" + file
         print filename
-        os.system('./spliter ' + filename + ' '
-            + str(uuid.uuid1()) + ' ' + str(uuid.uuid1()) + ' '
-            + str(uuid.uuid1()) + ' ' + str(uuid.uuid1()) )
+        os.system('./spliter ' + filename )

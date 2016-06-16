@@ -1,15 +1,19 @@
 #include <iostream>
+#include <string>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
-#include <string>
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#include <boost/lexical_cast.hpp>
 using namespace std;
 using namespace cv;
 
 int main(int argc, char* argv[])
 {
-    if(argc != 6) {
-        fprintf(stderr, "Usage: ./spliter <image_filename> <output_filenames>[4]\n");
+    if(argc != 2) {
+        fprintf(stderr, "Usage: ./spliter <image_filename>\n");
         return 1;
     }
     Mat image = imread(argv[1], CV_LOAD_IMAGE_GRAYSCALE);
@@ -22,8 +26,9 @@ int main(int argc, char* argv[])
     };
     for(int i = 0; i < 4; i++){
         Mat letter = image.colRange(col_ranges[i]);
-        string filename(argv[2 + i]);
-        filename = "./letters/" + filename + ".png";
+        boost::uuids::random_generator rgen;
+        boost::uuids::uuid ranUUID = rgen();
+        string filename = "./letters/" + boost::lexical_cast<string>(ranUUID) + ".png";
         imwrite(filename, letter);
     }
 

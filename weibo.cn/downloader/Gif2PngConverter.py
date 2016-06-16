@@ -7,6 +7,9 @@ files = os.listdir("./captchas")
 for file in files:
     if file.split('.')[-1] == 'gif':
         print file
-        im = Image.open("./captchas/" + file)
-        im.save("./captchas/" + file.split('.gif')[0] + ".png")
+        try:
+            im = Image.open("./captchas/" + file)
+            im.save("./captchas/" + file.split('.gif')[0] + ".png")
+        except Exception,ex:
+               print Exception,":",ex
         os.remove("./captchas/" + file)

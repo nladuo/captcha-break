@@ -11,7 +11,6 @@ class CaptchaUtils
 public:
     CaptchaUtils();
     void clear_peper_noise (cv::Mat &image, int max_adhesion_count);
-    void clear_noise_line (cv::Mat &image);
     void vertical_project(cv::Mat &image, int splits[]);
 };
 

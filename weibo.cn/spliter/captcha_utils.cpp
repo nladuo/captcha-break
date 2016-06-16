@@ -43,7 +43,7 @@ void find_connection_area(cv::Point now_point, cv::Mat image, std::vector<cv::Po
     //添加到队列里面
     area.push_back(now_point);
     tranversed_points.push_back(now_point);
-    cout<<now_point.x<<"  "<<now_point.y<<endl;
+    // cout<<now_point.x<<"  "<<now_point.y<<endl;
 
     //向8个方向递归
     find_connection_area(cv::Point(now_point.x, now_point.y-1), image, area, tranversed_points);//上
@@ -56,35 +56,6 @@ void find_connection_area(cv::Point now_point, cv::Mat image, std::vector<cv::Po
     find_connection_area(cv::Point(now_point.x+1, now_point.y+1), image, area, tranversed_points);//右下
 }
 
-/**
- * 填补缺失的轮廓线
- * @brief fill_loss_contours
- * @param image
- */
-void fill_loss_contours(cv::Mat &image)
-{
-    //先找连通域
-    using namespace std;
-    using namespace cv;
-    vector<vector<Point> > areas;
-    vector<Point> tranversed_points;
-    for(int i = 0; i < image.size().width; i++){
-        for(int j = 0; j < image.size().height; j++){
-            if(image.at<uchar>(j, i) == 0
-                    && !has_tranversed_the_point(i, j, tranversed_points)){
-                vector<Point> area;
-                find_connection_area(cv::Point(i, j), image, area, tranversed_points);
-
-                areas.push_back(area);
-            }
-        }
-    }
-    cout<<"连通域个数："<<areas.size()<<endl;
-    //如果连通域不是环路，取出截断点
-    for(int i = 0; i < areas.size(); i++){
-
-    }
-}
 
 /**
  * 去除椒盐噪声
@@ -110,7 +81,7 @@ void CaptchaUtils::clear_peper_noise (cv::Mat &image, int max_adhesion_count)
             }
         }
     }
-    cout<<"连通域个数："<<areas.size()<<endl;
+//    cout<<"连通域个数："<<areas.size()<<endl;
     //去除噪声
     for(int i = 0; i < areas.size(); i++){
         if(areas[i].size() <= max_adhesion_count){
@@ -134,7 +105,7 @@ void CaptchaUtils::vertical_project (cv::Mat &image, int splits[])
             }
         }
         project[i] = count;
-        std::cout<<i<<" : "<<count<<std::endl;
+        // std::cout<<i<<" : "<<count<<std::endl;
     }
     int index = 0;
     int i = 1;

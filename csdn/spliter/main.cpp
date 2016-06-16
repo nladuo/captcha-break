@@ -9,7 +9,7 @@ using namespace cv;
 int main(int argc, char* argv[])
 {
     if(argc != 6) {
-        fprintf(stderr, "Usage: ./csdn_spliter <image_filename> <output_filenames>[4]\n");
+        fprintf(stderr, "Usage: ./spliter <image_filename> <output_filenames>[4]\n");
         return 1;
     }
     Mat image = imread(argv[1], CV_LOAD_IMAGE_GRAYSCALE);

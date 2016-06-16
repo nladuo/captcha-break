@@ -1,11 +1,12 @@
-#include "mainwindow.h"
-#include <QApplication>
+#include "spliter.h"
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
-
-    return a.exec();
+    if(argc != 2) {
+        fprintf(stderr, "Usage: ./spliter <image_filename> <output_filenames>[4]\n");
+        return 1;
+    }
+    Spliter spliter("./dataset/");
+    spliter.split_letters(argv[1]);
+    return 0;
 }

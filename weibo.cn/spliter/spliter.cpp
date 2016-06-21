@@ -36,15 +36,16 @@ void Spliter::split_letters(std::string filename)
 
 void Spliter::save_image(cv::Mat &splited_mat)
 {
-    if(splited_mat.size().width > 30) return;
+    if(splited_mat.size().width > 28) return;
 
-    //put the mat in center of 20*30 pixels image.
-    int out_height = 20;
-    int out_width = 30;
+    //put the mat in center of 28*28 pixels image.
+    int out_height = 28;
+    int out_width = 28;
     cv::Mat out(out_height, out_width, CV_8UC1,cv::Scalar(255));
     int offset_x = (out_width - splited_mat.size().width)/2;
+    int offset_y = (28 - 20)/2;
     cv::Mat imageROI;
-    imageROI = out(cv::Rect(offset_x, 0, splited_mat.cols, splited_mat.rows));
+    imageROI = out(cv::Rect(offset_x, offset_y, splited_mat.cols, splited_mat.rows));
     splited_mat.copyTo(imageROI);
 
     //generate random filename

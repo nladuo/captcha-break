@@ -29,7 +29,7 @@ func getGuid() string {
 }
 
 func main() {
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 5000; i++ {
 
 		doc, err := goquery.NewDocument("http://login.weibo.cn/login/")
 		if err != nil {

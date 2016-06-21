@@ -9,14 +9,14 @@ split the letter averagely, and use KNN to recognize the letter.
 ## Steps
 ### 1.download the captcha  
 ``` shell
-rm ./downloader/vocdes/*
+mkdir ./downloader/vocdes/
 go run ./downloader/downloader.go
 ```
 ### 2.split the letter from captcha  
 ``` shell
 cd ./spliter && cmake . && make
 mkdir letters
-python ./spliter_run.py
+./spliter
 ```
 ### 3.recognize the letter by human, create the dataset.  
 You can check the result at [./recognizer/dataset](./recognizer/dataset)

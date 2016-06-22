@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     for (;itr != images.end(); ++itr)
     {
         std::cout<<*itr<<std::endl;
-        spliter.split_letters(*itr);
+        spliter.split_and_save(*itr);
 
     }
     return 0;

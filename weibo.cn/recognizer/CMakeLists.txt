@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project(trainer)
+project(recognizer)
 include_directories(${PROJECT_SOURCE_DIR} )
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
@@ -8,6 +8,6 @@ tiny_cnn/layers/average_pooling_layer.h  tiny_cnn/config.h  tiny_cnn/util/deform
 find_package(OpenCV REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem system)
 aux_source_directory(./ SOURCE_DIR)
-add_executable(trainer ${SOURCE_DIR} ${tiny_cnn_hrds})
-target_link_libraries(trainer ${OpenCV_LIBS})
-target_link_libraries(trainer ${Boost_LIBRARIES})
+add_executable(recognizer ${SOURCE_DIR} ${tiny_cnn_hrds})
+target_link_libraries(recognizer ${OpenCV_LIBS})
+target_link_libraries(recognizer ${Boost_LIBRARIES})

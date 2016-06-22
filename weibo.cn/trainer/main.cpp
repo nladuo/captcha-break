@@ -1,8 +1,17 @@
 #include <iostream>
+#include <boost/filesystem.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 #include "tiny_cnn/tiny_cnn.h"
 
 using namespace tiny_cnn;
 using namespace tiny_cnn::activation;
+namespace fs = boost::filesystem;
+
+std::string label_strs[14] = {
+    "3", "C", "D", "E", "F", "H", "J", "K", "L", "M", "N", "W", "X", "Y"
+};
 
 void construct_net(network<sequential>& nn) {
     // connection table [Y.Lecun, 1998 Table.1]
@@ -26,13 +35,53 @@ void construct_net(network<sequential>& nn) {
             connection_table(tbl, 6, 16))              // C3, 6@14x14-in, 16@10x10-in
        << average_pooling_layer<tan_h>(10, 10, 16, 2)  // S4, 16@10x10-in, 16@5x5-out
        << convolutional_layer<tan_h>(5, 5, 5, 16, 120) // C5, 16@5x5-in, 120@1x1-out
-       << fully_connected_layer<tan_h>(120, 10);       // F6, 120-in, 10-out
+       << fully_connected_layer<tan_h>(120, 14);       // F6, 120-in, 14-out
 }
 
-void load_dataset(std::vector<label_t> train_labels,
-                  std::vector<vec_t> train_images)
+// convert image to vec_t
+void convert_image(const std::string& imagefilename,
+    double minv,
+    double maxv,
+    int w,
+    int h,
+    vec_t& data) {
+    auto img = cv::imread(imagefilename, cv::IMREAD_GRAYSCALE);
+    if (img.data == nullptr) return; // cannot open, or it's not an image
+
+    cv::Mat_<uint8_t> resized;
+    cv::resize(img, resized, cv::Size(w, h));
+
+    // mnist dataset is "white on black", so negate required
+    std::transform(resized.begin(), resized.end(), std::back_inserter(data),
+        [=](uint8_t c) { return (255 - c) * (maxv - minv) / 255.0 + minv; });
+}
+
+
+void load_training_set(std::vector<label_t> &train_labels,
+                  std::vector<vec_t> &train_images)
 {
-    
+    for (int i = 0; i < 14; ++i){
+        std::vector<std::string> images;
+
+        fs::directory_iterator end_iter;
+        fs::path path("./training_set/"+label_strs[i]);
+        for (fs::directory_iterator iter(path); iter != end_iter; ++iter)
+        {
+            if (fs::extension(*iter)==".png")
+            {
+                images.push_back(iter->path().string());
+            }
+        }
+
+        std::vector<std::string>::iterator itr = images.begin();
+        for (;itr != images.end(); ++itr)
+        {
+            train_labels.push_back(i);
+            vec_t data;
+            convert_image(*itr, -1.0, 1.0, 32, 32, data);
+            train_images.push_back(data);
+        }
+    }
 }
 
 int main(int argc, char **argv) {
@@ -44,29 +93,26 @@ int main(int argc, char **argv) {
 
     std::cout << "load models..." << std::endl;
 
-    // load MNIST dataset
+    // load training set
     std::vector<label_t> train_labels;
     std::vector<vec_t> train_images;
 
-    load_dataset(train_labels, train_images);
+    load_training_set(train_labels, train_images);
 
-//    parse_mnist_labels(data_dir_path+"/train-labels.idx1-ubyte",
-//                       &train_labels);
-//    parse_mnist_images(data_dir_path+"/train-images.idx3-ubyte",
-//                       &train_images, -1.0, 1.0, 2, 2);
-
-    std::cout << "start training" << std::endl;
+    std::cout << "start training: "<<train_images.size()<<" examples..."<< std::endl;
 
     progress_display disp(train_images.size());
     timer t;
-    int minibatch_size = 10;
+    int minibatch_size = 50;
     int num_epochs = 30;
 
-    optimizer.alpha *= std::sqrt(minibatch_size);
+    // optimizer.alpha *= std::sqrt(minibatch_size);
 
     // create callback
     auto on_enumerate_epoch = [&](){
         std::cout << t.elapsed() << "s elapsed." << std::endl;
+        tiny_cnn::result res = nn.test(train_images, train_labels);
+        std::cout << res.num_success << "/" << res.num_total << std::endl;
         disp.restart(train_images.size());
         t.restart();
     };
@@ -82,6 +128,6 @@ int main(int argc, char **argv) {
     std::cout << "end training." << std::endl;
 
     // save networks
-    std::ofstream ofs("LeNet-weights");
+    std::ofstream ofs("weibo.cn-nn-weights");
     ofs << nn;
 }

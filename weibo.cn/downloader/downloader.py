@@ -6,7 +6,7 @@ import os
 from bs4 import BeautifulSoup
 
 url = "http://login.weibo.cn/login/"
-for i in range(1000):
+for i in range(2000):
     try:
         resp = requests.get(url)
         bsObj = BeautifulSoup(resp.content, "lxml")

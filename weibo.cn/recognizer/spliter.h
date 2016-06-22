@@ -16,6 +16,7 @@
 class Spliter
 {
 public:
+    Spliter();
     Spliter(std::string save_dir);
     void split_letters(std::string filename, cv::Mat letters[4]);
     void split_and_save(std::string filename);

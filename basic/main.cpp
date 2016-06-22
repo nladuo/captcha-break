@@ -7,9 +7,13 @@
 using namespace cv;
 using namespace std;
 
-int main()
+int main(int argc, char* argv[])
 {
-    Mat mat = imread("./basic.jpg", 0);
+	if(argc != 2) {
+        fprintf(stderr, "Usage: ./recognizer <image_filename>\n");
+        return 1;
+    }
+    Mat mat = imread(argv[1], 0);
     Mat threshold_mat;
     cv::threshold(mat, threshold_mat, 150, 255, cv::THRESH_BINARY);
 

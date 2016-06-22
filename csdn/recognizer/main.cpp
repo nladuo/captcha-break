@@ -108,7 +108,7 @@ void recognize(string path, Mat dataset[], int labels[])
 int main(int argc, char* argv[])
 {
     if(argc != 2) {
-        fprintf(stderr, "Usage: ./csdn_recognizer <image_filename>\n");
+        fprintf(stderr, "Usage: ./recognizer <image_filename>\n");
         return 1;
     }
     Mat dataset[10 * 6];

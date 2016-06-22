@@ -13,5 +13,8 @@ cmake . && make
 ```
 ### 2.recognize
 ``` shell
-./recognizer
+./recognizer basic.jpg
+./recognizer test1.jpg
+./recognizer test2.jpg
+./recognizer test3.jpg
 ```

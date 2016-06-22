@@ -22,7 +22,7 @@ mkdir dataset
 ### 3. Recognize the letters by human.
 You can check the result in [./trainer/training_set.zip](./trainer/training_set.zip)
 ``` shell
-cd ..
+cd ../trainer/
 unzip training_set.zip
 ```
 ### 4. Train the dataset.

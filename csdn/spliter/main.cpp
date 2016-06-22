@@ -14,7 +14,7 @@ namespace fs = boost::filesystem;
 
 int main(int argc, char* argv[])
 {
-    fs::path captchas_path("../downloader/vcodes/");
+    fs::path captchas_path("../downloader/captchas/");
     std::vector<std::string> images;
 
     fs::directory_iterator end_iter;

@@ -144,7 +144,8 @@ void clear_horizontal_noise_line(cv::Mat &image)
     int first_height;
     bool has_find = false;
     for(int i = 0; i < image.size().height; i++){
-        //水平上连续三个点都是很黑的
+        //if three continuous pixels are black horizontally， 
+        //   these three pixels are part of noise line
         if(image.at<cv::Vec3b>(i, 0)[0] < 12
                 && image.at<cv::Vec3b>(i, 0)[1] < 12
                 && image.at<cv::Vec3b>(i, 0)[2] < 12
@@ -160,21 +161,21 @@ void clear_horizontal_noise_line(cv::Mat &image)
     while(now_width < image.size().width){
         int width = get_horizontal_noise_line_width(image, now_height, now_width);
         //cout<<now_width<<"  "<<now_height<< " width:"<<width<<endl;
-        //清除直线
+        //clear the horizontal noise line
         for(int i = now_width; i < now_width + width; i++){
             int top_num = 0;
             int bottom_num = 0;
-            //上面的点
+            //the upper pixel
             if(is_black(i, now_height-1, image)) top_num++;
-            //左上面的点
+            //the upper left pixel 
             if(is_black(i-1, now_height-1, image)) top_num++;
-            //右上面的点
+            //the upper right pixel
             if(is_black(i+1, now_height-1, image)) top_num++;
-            //下面的点
+            //the lower pixel
             if(is_black(i, now_height+1, image)) bottom_num++;
-            //左下面的点
+            //the left lower pixel
             if(is_black(i-1, now_height+1, image)) bottom_num++;
-            //右下面的点
+            //the right lower pixel
             if(is_black(i+1, now_height+1, image)) bottom_num++;
 
             if(now_height != 0 && now_height != image.size().height){
@@ -186,7 +187,7 @@ void clear_horizontal_noise_line(cv::Mat &image)
             image.at<cv::Vec3b>(now_height, i)[2] = 255;
         }
 
-        //寻找下一个点的位置
+        //find the next noise pixel
         int a = get_horizontal_noise_line_width(image, now_height - 1, now_width + width -1);
         int b = get_horizontal_noise_line_width(image, now_height + 1, now_width + width -1);
         int c = get_horizontal_noise_line_width(image, now_height - 1, now_width + width);
@@ -200,14 +201,14 @@ void clear_horizontal_noise_line(cv::Mat &image)
         int max_a_b_c_d = max_a_b>max_c_d?max_a_b:max_c_d;
         //cout<<"max_abcd:"<<max_a_b_c_d<<endl;
         if(max_a_b_c_d < 2) break;
-        if(max_a_b == max_a_b_c_d){//下一个点在正上方或者在正下方
+        if(max_a_b == max_a_b_c_d){//the next noise pixel is located at lower or upper pixel
             now_width += width-1;
             if(max_a_b == a){
                 now_height -= 1;
             }else{
                 now_height += 1;
             }
-        }else{//下一个点在斜着的方法
+        }else{//the next noise pixel is located at right lower or upper right pixel
             now_width += width;
             if(max_c_d == c){
                 now_height -= 1;
@@ -217,5 +218,3 @@ void clear_horizontal_noise_line(cv::Mat &image)
         }
     }
 }
-
-

@@ -11,15 +11,17 @@ int main(int argc, char *argv[])
     fs::path captchas_path("../downloader/captchas/");
     std::vector<std::string> images;
 
+    //get all captcha files
     fs::directory_iterator end_iter;
     for (fs::directory_iterator iter(captchas_path); iter != end_iter; ++iter)
     {
-        if (fs::extension(*iter)==".png")        // 文件后缀
+        if (fs::extension(*iter)==".png")       
         {
-            images.push_back(iter->path().string());    //获取文件名
+            images.push_back(iter->path().string()); 
         }
     }
 
+    //split all captchas
     std::vector<std::string>::iterator itr = images.begin();
     Spliter spliter("./dataset/");
     for (;itr != images.end(); ++itr)

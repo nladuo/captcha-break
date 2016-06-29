@@ -57,29 +57,37 @@ void convert_image(const std::string& imagefilename,
 }
 
 
-void load_training_set(std::vector<label_t> &train_labels,
-                  std::vector<vec_t> &train_images)
+void load_dataset(std::vector<label_t> &train_labels,
+                  std::vector<vec_t> &train_images,
+                  std::vector<label_t> &test_labels,
+                  std::vector<vec_t> &test_images)
 {
     for (int i = 0; i < 14; ++i){
         std::vector<std::string> images;
 
         fs::directory_iterator end_iter;
         fs::path path("./training_set/"+label_strs[i]);
-        for (fs::directory_iterator iter(path); iter != end_iter; ++iter)
-        {
-            if (fs::extension(*iter)==".png")
-            {
+        for (fs::directory_iterator iter(path); iter != end_iter; ++iter){
+            if (fs::extension(*iter)==".png"){
                 images.push_back(iter->path().string());
             }
         }
 
+        //train_set.size() : test_set.size() = 4:1
+        int flag = 0;
         std::vector<std::string>::iterator itr = images.begin();
-        for (;itr != images.end(); ++itr)
-        {
-            train_labels.push_back(i);
+        for (;itr != images.end(); ++itr){
             vec_t data;
             convert_image(*itr, -1.0, 1.0, 32, 32, data);
-            train_images.push_back(data);
+            if (flag <= 4){
+                train_labels.push_back(i);
+                train_images.push_back(data);
+            }else{
+                test_labels.push_back(i);
+                test_images.push_back(data);
+                flag = 0;
+            }
+            flag++; 
         }
     }
 }
@@ -93,25 +101,27 @@ int main(int argc, char **argv) {
 
     std::cout << "load models..." << std::endl;
 
-    // load training set
+    // load training set and test set.
     std::vector<label_t> train_labels;
+    std::vector<label_t> test_labels;
     std::vector<vec_t> train_images;
+    std::vector<vec_t> test_images;
 
-    load_training_set(train_labels, train_images);
+    load_dataset(train_labels, train_images, test_labels, test_images);
 
     std::cout << "start training: "<<train_images.size()<<" examples..."<< std::endl;
 
     progress_display disp(train_images.size());
     timer t;
-    int minibatch_size = 50;
-    int num_epochs = 30;
+    int minibatch_size = 100;
+    int num_epochs = 50;
 
     // optimizer.alpha *= std::sqrt(minibatch_size);
 
     // create callback
     auto on_enumerate_epoch = [&](){
         std::cout << t.elapsed() << "s elapsed." << std::endl;
-        tiny_cnn::result res = nn.test(train_images, train_labels);
+        tiny_cnn::result res = nn.test(test_images, test_labels);
         std::cout << res.num_success << "/" << res.num_total << std::endl;
         disp.restart(train_images.size());
         t.restart();

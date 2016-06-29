@@ -40,4 +40,4 @@ cd ../recognizer && cmake . && make
 ```
 
 ## About the Accuracy
-The accuracy is less than 40%. You can enhance the accuracy by enlarging your training set.
+The accuracy is about 60%. You can enhance the accuracy by enlarging your training set.

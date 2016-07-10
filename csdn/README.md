@@ -5,7 +5,7 @@ CAPTCHA from http://download.csdn.net/
 ## status
 finished.
 ## technique
-split the letter averagely, and use KNN to recognize the letter.
+split the letter averagely, and use KNN to recognize every letter.
 ## Steps
 ### 1.Download some captchas.
 ``` shell

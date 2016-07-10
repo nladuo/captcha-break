@@ -8,7 +8,7 @@ The simplest captcha breaking.
 ![](./csdn/csdn.png)  
 CAPTCHA from http://download.csdn.net/
 ### [SubMail](./submail)
-![](./submail/submail.png) 
+![](./submail/submail.png)   
 CAPTCHA from http://submail.cn/sms
 ### [Weibo.cn](./weibo.cn)
 ![](./weibo.cn/weibo.cn.png)  

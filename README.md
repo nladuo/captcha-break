@@ -13,8 +13,5 @@ CAPTCHA from http://submail.cn/sms
 ### [Weibo.cn](./weibo.cn)
 ![](./weibo.cn/weibo.cn.png)  
 CAPTCHA from http://login.weibo.cn/login/
-### [Weibo.cn——type2](./weibo.cn2)
-![](./weibo.cn2/weibo.cn2.png)  
-CAPTCHA from http://login.weibo.cn/login/
 ## License
 MIT

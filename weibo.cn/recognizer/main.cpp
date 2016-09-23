@@ -106,10 +106,10 @@ int recognize(const std::string& dictionary, cv::Mat &img) {
     auto res = nn.predict(data);
     vector<pair<double, int> > scores;
 
-    // sort & print top-3
     for (int i = 0; i < 14; i++)
         scores.emplace_back(rescale<tan_h>(res[i]), i);
 
+    // sort and get the result
     sort(scores.begin(), scores.end(), greater<pair<double, int>>());
     return scores[0].second;
 }

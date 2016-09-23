@@ -18,34 +18,26 @@ bool has_tranversed_the_point(int x, int y, std::vector<cv::Point>& tranversed_p
     return false;
 }
 
-/**
- * 寻找连通域
- * @brief find_connection_area
- * @param now_point
- * @param image
- * @param area
- * @param tranversed_points
- */
 void find_connection_area(cv::Point now_point, cv::Mat image, std::vector<cv::Point>& area,
                           std::vector<cv::Point>& tranversed_points)
 {
     using namespace std;
-    //如果不是黑色就返回
+    //return when the point color is white
     if(image.at<uchar>(now_point.y, now_point.x) != 0) return;
-    //遇到边界就返回
+    //return when the point is excceed boundary
     if(now_point.x < 0 || now_point.x >= image.size().width
        || now_point.y < 0 || now_point.y >= image.size().height ){
         return;
     }
-    //如果已经遍历了就直接返回
+    //has tranversed
     if(has_tranversed_the_point(now_point.x, now_point.y, tranversed_points)) return;
 
-    //添加到队列里面
+    //put the tranversed point to vector
     area.push_back(now_point);
     tranversed_points.push_back(now_point);
     // cout<<now_point.x<<"  "<<now_point.y<<endl;
 
-    //向8个方向递归
+    //recursively find connection area
     find_connection_area(cv::Point(now_point.x, now_point.y-1), image, area, tranversed_points);//上
     find_connection_area(cv::Point(now_point.x, now_point.y+1), image, area, tranversed_points);//下
     find_connection_area(cv::Point(now_point.x-1, now_point.y), image, area, tranversed_points);//左
@@ -57,15 +49,9 @@ void find_connection_area(cv::Point now_point, cv::Mat image, std::vector<cv::Po
 }
 
 
-/**
- * 去除椒盐噪声
- * @brief CaptchaUtils::clear_peper_noise
- * @param image
- * @param max_adhesion_count
- */
 void CaptchaUtils::clear_peper_noise (cv::Mat &image, int max_adhesion_count)
 {
-    //先找连通域
+    //find connected area
     using namespace std;
     using namespace cv;
     vector<vector<Point> > areas;
@@ -81,8 +67,7 @@ void CaptchaUtils::clear_peper_noise (cv::Mat &image, int max_adhesion_count)
             }
         }
     }
-//    cout<<"连通域个数："<<areas.size()<<endl;
-    //去除噪声
+    //clean the noises
     for(int i = 0; i < areas.size(); i++){
         if(areas[i].size() <= max_adhesion_count){
             for(int j = 0; j < areas[i].size();j++){
@@ -114,7 +99,7 @@ void CaptchaUtils::vertical_project (cv::Mat &image, int splits[])
         if((project[i] > threshold && project[i-1] <= threshold)
                 || (project[i] <= threshold && project[i-1] > threshold) ){
             if(index % 2 == 1
-                    && (i - splits[index-1]) <= 8 ) {//如果是奇数(+1后是偶数)，距离必须大于一定值
+                    && (i - splits[index-1]) <= 8 ) {
                 i++;
                 continue;
             }

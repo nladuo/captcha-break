@@ -28,6 +28,7 @@ unzip training_set.zip
 ### 4. Train the dataset.
 ```
 cmake . && make
+./trainer
 mv ./weibo.cn-nn-weights ../recognizer/
 ```
 ### 5. Test the recognizer

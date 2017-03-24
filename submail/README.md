@@ -1,11 +1,14 @@
 # SubMail
 CAPTCHA from http://submail.cn/sms
-## captcha image
+## The Captcha Image
 ![](./submail.png)  
-## status
+
+## Status
 finished.
-## technique
+
+## Technique
 split the letters with findCountours, and use template to recognize every letter.
+
 ## Steps
 ### 1.Download some captchas.
 ``` shell

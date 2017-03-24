@@ -1,12 +1,15 @@
 # Weibo.cn
 CAPTCHA from http://login.weibo.cn/login/
-## captcha image
+## The Captcha Image
 ![](./weibo.cn.png)
-## status
+
+## Status
 finshied.
-## technique
+
+## Technique
 use some computer vision algorithm to clean the peper noise and noise line, 
 vertical projection to split the word, and CNN to train the dataset.
+
 ## Steps
 ### 1.Download some captchas.
 ``` shell

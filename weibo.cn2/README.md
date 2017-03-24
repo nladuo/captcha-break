@@ -1,13 +1,17 @@
 # Weibo.cn—type2
 CAPTCHA from http://login.weibo.cn/login/
-## note
+
+## Note
 When I use python requests library to login weibo.cn,
 the captcha letters sometimes become the chinese letters.
-## captcha image
+
+## The Captcha Image
 ![](./weibo.cn2.png)
-## status
+
+## Status
 building...
-## technique
+
+## Technique
 use tesseract-ocr directly.
 
 

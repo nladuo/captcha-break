@@ -1,11 +1,15 @@
 # CSDN Download
 CAPTCHA from http://download.csdn.net/
-## captcha image
+
+## The Captcha image
 ![](./csdn.png)  
-## status
+
+## Status
 finished.
-## technique
+
+## Technique
 split the letter averagely, and use KNN to recognize every letter.
+
 ## Steps
 ### 1.Download some captchas.
 ``` shell

@@ -1,11 +1,15 @@
 # basic
 The simplest captcha breaking.
-## captcha image
+
+## The Captcha Image
 ![](./basic.jpg)
-## status
+
+## Status
 finished.  
-## technique
+
+## Technique
 use tesseract-ocr directly.
+
 ## Steps
 ### 1.build
 ``` shell

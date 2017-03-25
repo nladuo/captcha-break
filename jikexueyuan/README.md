@@ -8,7 +8,7 @@ CAPTCHA from http://passport.jikexueyuan.com/sso/login
 ![](./result.png)
 
 ## Enviorment
-Programing Language: C++
+Programing Language: C++  
 Library: opencv2 + libboost
 
 ## Status

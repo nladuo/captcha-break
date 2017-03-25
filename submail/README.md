@@ -10,7 +10,7 @@ finished.
 split the letters with findCountours, and use template to recognize every letter.
 
 ## Enviorment
-Programing Language: C++
+Programing Language: C++  
 Library: opencv2 + libboost
 
 ## Steps

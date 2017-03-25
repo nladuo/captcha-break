@@ -8,7 +8,7 @@ The simplest captcha breaking.
 finished.  
 
 ## Enviorment
-Programing Language: C++
+Programing Language: C++  
 Library: opencv2 + libboost + tesseract-ocr
 
 ## Technique

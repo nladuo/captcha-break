@@ -8,7 +8,7 @@ CAPTCHA from http://download.csdn.net/
 finished.
 
 ## Enviorment
-Programing Language: C++
+Programing Language: C++  
 Library: opencv2 + libboost
 
 ## Technique

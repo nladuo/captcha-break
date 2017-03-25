@@ -12,7 +12,7 @@ the captcha letters sometimes become the chinese letters.
 building...
 
 ## Enviorment
-Programing Language: Python
+Programing Language: Python  
 Library: Tensorflow-1.0 + PIL
 
 ## Technique

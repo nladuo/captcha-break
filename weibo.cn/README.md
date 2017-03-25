@@ -7,7 +7,7 @@ CAPTCHA from http://login.weibo.cn/login/
 finshied.
 
 ## Enviorment
-Programing Language: C++
+Programing Language: C++  
 Library: opencv2 + libboost
 
 ## Technique

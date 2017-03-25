@@ -7,8 +7,12 @@ CAPTCHA from http://passport.jikexueyuan.com/sso/login
 ## Result
 ![](./result.png)
 
+## Enviorment
+Programing Language: C++
+Library: opencv2 + libboost
+
 ## Status
-building...
+half-finished. 
 
 ## Technique
 use Expectation-maximization algorithm to split the data(the effect may be not good for some captcha), and you can use CNN to train the data set.

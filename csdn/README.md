@@ -7,6 +7,10 @@ CAPTCHA from http://download.csdn.net/
 ## Status
 finished.
 
+## Enviorment
+Programing Language: C++
+Library: opencv2 + libboost
+
 ## Technique
 split the letter averagely, and use KNN to recognize every letter.
 

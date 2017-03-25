@@ -6,6 +6,10 @@ CAPTCHA from http://login.weibo.cn/login/
 ## Status
 finshied.
 
+## Enviorment
+Programing Language: C++
+Library: opencv2 + libboost
+
 ## Technique
 use some computer vision algorithm to clean the peper noise and noise line, 
 vertical projection to split the word, and CNN to train the dataset.

@@ -9,6 +9,10 @@ finished.
 ## Technique
 split the letters with findCountours, and use template to recognize every letter.
 
+## Enviorment
+Programing Language: C++
+Library: opencv2 + libboost
+
 ## Steps
 ### 1.Download some captchas.
 ``` shell

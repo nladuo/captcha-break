@@ -8,4 +8,5 @@ The login CAPTCHA(sometimes appears) of http://weibo.com
 building...
 
 ## Enviorment
-python: Tensorflow + PIL
+Programing Language: Python
+Library: Tensorflow-1.0 + PIL

@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # coding:utf-8
 import requests
 import uuid
@@ -13,19 +14,19 @@ for i in range(2000):
         image_url = str(bsObj.img['src'])
         resp = requests.get(image_url)
         filename = str(uuid.uuid4()) + ".gif"
-        with open("./captchas/" + filename, 'wb') as f:
+        with open("./tests/" + filename, 'wb') as f:
             for chunk in resp.iter_content(chunk_size=1024):
                 if chunk:  # filter out keep-alive new chunks
                     f.write(chunk)
                     f.flush()
             f.close()
-        im = Image.open("./captchas/" + filename)
+        im = Image.open("./tests/" + filename)
         try:
-            im = Image.open("./captchas/" + filename)
-            im.save("./captchas/" + filename.split('.gif')[0] + ".png")
+            im = Image.open("./tests/" + filename)
+            im.save("./tests/" + filename.split('.gif')[0] + ".png")
         except Exception, ex:
             print Exception, ":", ex
-        os.remove("./captchas/" + filename)
+        os.remove("./tests/" + filename)
         print filename
     except Exception, ex:
         print Exception, ":", ex

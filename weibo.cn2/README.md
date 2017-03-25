@@ -1,8 +1,8 @@
-# Weibo.cn—type2
+# Weibo.cn—Type2
 CAPTCHA from http://login.weibo.cn/login/
 
 ## Note
-When I use python requests library to login weibo.cn,
+When I use python requests library to mock logining the weibo.cn, 
 the captcha letters sometimes become the chinese letters.
 
 ## The Captcha Image
@@ -11,7 +11,9 @@ the captcha letters sometimes become the chinese letters.
 ## Status
 building...
 
+## Enviorment
+Programing Language: Python
+Library: Tensorflow-1.0 + PIL
+
 ## Technique
-use tesseract-ocr directly.
-
-
+use the convolutional neural network.

@@ -13,7 +13,7 @@ building...
 
 ## Enviorment
 Programing Language: Python  
-Library: Tensorflow-1.0 + PIL
+Library: Tensorflow-1.0 + pillow + scikit-learn-0.18
 
 ## Technique
 use the convolutional neural network.

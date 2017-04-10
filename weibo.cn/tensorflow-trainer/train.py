@@ -2,15 +2,9 @@
 # coding:utf-8
 
 import cPickle as pickle
-from PIL import Image
 import numpy as np
 import tensorflow as tf
 
-
-def check_dataset(dataset, labels, label_map):
-    im = Image.fromarray(np.uint8(dataset[1]))
-    print label_map[labels[1]]
-    im.show()
 
 if __name__ == '__main__':
     with open("save.pickle", 'rb') as f:
@@ -21,8 +15,6 @@ if __name__ == '__main__':
         test_labels = save['test_labels']
         label_map = save['label_map']
 
-    # check_dataset(train_dataset, train_labels, label_map)
-
     image_size = 32
     num_labels = len(label_map)
 
@@ -32,7 +24,6 @@ if __name__ == '__main__':
     print "test_labels:", test_labels.shape
     print "num_labels:", num_labels
 
-    
 
     def reformat(dataset, labels):
         dataset = dataset.reshape((-1, image_size * image_size)).astype(np.float32)
@@ -43,10 +34,11 @@ if __name__ == '__main__':
     train_dataset, train_labels = reformat(train_dataset, train_labels)
     test_dataset, test_labels = reformat(test_dataset, test_labels)
 
-    print train_dataset.shape
-    print train_labels.shape
-    print test_dataset.shape
-    print test_labels.shape
+    print "\nAfter reformat:"
+    print "train_dataset:", train_dataset.shape
+    print "train_labels:", train_labels.shape
+    print "test_dataset:", test_dataset.shape
+    print "test_labels:", test_labels.shape
 
 
     def accuracy(predictions, labels):
@@ -119,7 +111,7 @@ if __name__ == '__main__':
         cross_entropy = tf.reduce_mean(
             tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y_conv))
 
-        train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
+        train_step = tf.train.AdamOptimizer(1e-5).minimize(cross_entropy)
         correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_, 1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
@@ -128,7 +120,7 @@ if __name__ == '__main__':
         tf.global_variables_initializer().run()
         print("Initialized")
 
-        for step in range(1001):
+        for step in range(2001):
             offset = (step * batch_size) % (train_labels.shape[0] - batch_size)
             # Generate a minibatch.
             batch_data = train_dataset[offset:(offset + batch_size), :]

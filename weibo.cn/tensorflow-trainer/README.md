@@ -4,7 +4,7 @@ use tensorflow to train the weibo.cn dataset.
 
 ## Dependancy
 - Tensorflow1.0
-- scikit-learn
+- scikit-learn-0.18
 - pillow
 
 ## Run
@@ -13,7 +13,12 @@ use tensorflow to train the weibo.cn dataset.
 python load_models.py
 ```
 
-2. train
+2. check the dataset
+``` sh
+python check_dataset.py
+```
+
+3. train
 ``` sh
 python train.py
 ```

@@ -2,8 +2,11 @@
 
 use tensorflow to train the weibo.cn dataset.
 
+## Note
+This is just a demo to train the weibo.cn dataset.
+
 ## Dependancy
-- Tensorflow1.0
+- Tensorflow-1.0
 - scikit-learn-0.18
 - pillow
 

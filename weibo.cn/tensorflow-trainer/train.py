@@ -7,6 +7,7 @@ import tensorflow as tf
 
 
 if __name__ == '__main__':
+    print "loading save.pickle..."
     with open("save.pickle", 'rb') as f:
         save = pickle.load(f)
         train_dataset = save['train_dataset']
@@ -49,7 +50,7 @@ if __name__ == '__main__':
         x = tf.placeholder(tf.float32, shape=[None, image_size * image_size])
         y_ = tf.placeholder(tf.float32, shape=[None, num_labels])
 
-        x_image = tf.reshape(x, [-1, 32, 32, 1])
+        x_image = tf.reshape(x, [-1, image_size, image_size, 1])
 
         # First Convolutional Layer
         W_conv1 = weight_variable([5, 5, 1, 32])

@@ -24,33 +24,7 @@ if __name__ == '__main__':
     print "test_labels:", test_labels.shape
     print "num_labels:", num_labels
 
-
-    def reformat(dataset, labels):
-        dataset = dataset.reshape((-1, image_size * image_size)).astype(np.float32)
-        # Map 1 to [0.0, 1.0, 0.0 ...], 2 to [0.0, 0.0, 1.0 ...]
-        labels = (np.arange(num_labels) == labels[:, None]).astype(np.float32)
-        return dataset, labels
-
-    train_dataset, train_labels = reformat(train_dataset, train_labels)
-    test_dataset, test_labels = reformat(test_dataset, test_labels)
-
-    print "\nAfter reformat:"
-    print "train_dataset:", train_dataset.shape
-    print "train_labels:", train_labels.shape
-    print "test_dataset:", test_dataset.shape
-    print "test_labels:", test_labels.shape
-
-
-    def accuracy(predictions, labels):
-        return (100.0 * np.sum(np.argmax(predictions, 1) == np.argmax(labels, 1))
-                / predictions.shape[0])
-
-    batch_size = 50
-    patch_size = 5
-    depth = 16
-    num_hidden = 64
-
-
+    
     def weight_variable(shape):
         initial = tf.truncated_normal(shape, stddev=0.1)
         return tf.Variable(initial)
@@ -111,7 +85,7 @@ if __name__ == '__main__':
         cross_entropy = tf.reduce_mean(
             tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y_conv))
 
-        train_step = tf.train.AdamOptimizer(1e-5).minimize(cross_entropy)
+        train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
         correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_, 1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 

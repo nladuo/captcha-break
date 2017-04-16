@@ -97,7 +97,7 @@ if __name__ == '__main__':
         tf.global_variables_initializer().run()
         print("Initialized")
 
-        for step in range(101):
+        for step in range(2001):
             offset = (step * batch_size) % (train_labels.shape[0] - batch_size)
             # Generate a minibatch.
             batch_data = train_dataset[offset:(offset + batch_size), :]

@@ -16,7 +16,7 @@ if __name__ == '__main__':
         test_labels = save['test_labels']
         label_map = save['label_map']
 
-    image_size = 28
+    image_size = 32
     num_labels = len(label_map)
 
     print "train_dataset:", train_dataset.shape
@@ -25,7 +25,7 @@ if __name__ == '__main__':
     print "test_labels:", test_labels.shape
     print "num_labels:", num_labels
 
-
+    
     def weight_variable(shape):
         initial = tf.truncated_normal(shape, stddev=0.1)
         return tf.Variable(initial)
@@ -86,16 +86,18 @@ if __name__ == '__main__':
         cross_entropy = tf.reduce_mean(
             tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y_conv))
 
-        train_step = tf.train.AdamOptimizer(1e-5).minimize(cross_entropy)
+        train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
         correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_, 1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+
+        saver = tf.train.Saver()
 
     batch_size = 128
     with tf.Session(graph=graph) as session:
         tf.global_variables_initializer().run()
         print("Initialized")
 
-        for step in range(2001):
+        for step in range(101):
             offset = (step * batch_size) % (train_labels.shape[0] - batch_size)
             # Generate a minibatch.
             batch_data = train_dataset[offset:(offset + batch_size), :]
@@ -112,4 +114,7 @@ if __name__ == '__main__':
 
         print("Test accuracy: %g" % accuracy.eval(feed_dict={
             x: test_dataset, y_: test_labels, keep_prob: 1.0}))
+
+        saver_path = saver.save(session, "./weibo.cn-model.ckpt")
+        print "Model saved in file: ", saver_path
 

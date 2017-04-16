@@ -45,7 +45,7 @@ if __name__ == "__main__":
             os.mkdir(save_path)
         # generate 360 sample for every character
         for i in range(-30, 30, 1):
-            for j in range(20):
+            for j in range(6):
                 generate_data(ch, i, save_path)
 
     print "finished."

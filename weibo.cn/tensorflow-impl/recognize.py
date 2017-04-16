@@ -1,31 +1,42 @@
 #!/usr/bin/env python
 # coding:utf-8
 
+from __future__ import print_function
 import cPickle as pickle
-import numpy as np
 import tensorflow as tf
+import numpy as np
+from PIL import Image
+import os
+import sys
 
 
 if __name__ == '__main__':
-    print "loading save.pickle..."
-    with open("save.pickle", 'rb') as f:
-        save = pickle.load(f)
-        train_dataset = save['train_dataset']
-        train_labels = save['train_labels']
-        test_dataset = save['test_dataset']
-        test_labels = save['test_labels']
-        label_map = save['label_map']
+    if len(sys.argv) != 2:
+        print("Usage: ./recoginze.py [image_path]")
+        exit(-1)
+
+    if not os.path.exists(sys.argv[1]):
+        print(sys.argv[1], "is not exists.")
+        exit(-1)
 
     image_size = 32
+    im = Image.open(sys.argv[1]).convert('L')
+    input_image = np.asarray(im, dtype=np.float32)
+    input_image = input_image.reshape(image_size * image_size).astype(np.float32)
+
+    if os.path.exists("label_map.pickle"):
+        with open("label_map.pickle", 'rb') as f:
+            label_map = pickle.load(f)
+    else:
+        with open("save.pickle", 'rb') as f:
+            save = pickle.load(f)
+            label_map = save['label_map']
+            with open("label_map.pickle", 'wb') as f2:
+                pickle.dump(label_map, f2)
+
     num_labels = len(label_map)
 
-    print "train_dataset:", train_dataset.shape
-    print "train_labels:", train_labels.shape
-    print "test_dataset:", test_dataset.shape
-    print "test_labels:", test_labels.shape
-    print "num_labels:", num_labels
 
-    
     def weight_variable(shape):
         initial = tf.truncated_normal(shape, stddev=0.1)
         return tf.Variable(initial)
@@ -48,7 +59,7 @@ if __name__ == '__main__':
     graph = tf.Graph()
     with graph.as_default():
         x = tf.placeholder(tf.float32, shape=[None, image_size * image_size])
-        y_ = tf.placeholder(tf.float32, shape=[None, num_labels])
+        # y_ = tf.placeholder(tf.float32, shape=[None, num_labels])
 
         x_image = tf.reshape(x, [-1, image_size, image_size, 1])
 
@@ -83,33 +94,14 @@ if __name__ == '__main__':
 
         y_conv = tf.matmul(h_fc1_drop, W_fc2) + b_fc2
 
-        cross_entropy = tf.reduce_mean(
-            tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y_conv))
+        prediction = tf.argmax(y_conv, 1)
 
-        train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
-        correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_, 1))
-        accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+        saver = tf.train.Saver()
 
     batch_size = 128
     with tf.Session(graph=graph) as session:
         tf.global_variables_initializer().run()
-        print("Initialized")
+        saver.restore(session, "./weibo.cn-model.ckpt")
 
-        for step in range(2001):
-            offset = (step * batch_size) % (train_labels.shape[0] - batch_size)
-            # Generate a minibatch.
-            batch_data = train_dataset[offset:(offset + batch_size), :]
-            batch_labels = train_labels[offset:(offset + batch_size), :]
-
-            if step % 50 == 0:
-                train_accuracy = accuracy.eval(feed_dict={
-                    x: batch_data, y_: batch_labels, keep_prob: 1.0})
-                test_accuracy = accuracy.eval(feed_dict={
-                    x: test_dataset, y_: test_labels, keep_prob: 1.0})
-                print("Step %d, Training accuracy: %g, Test accuracy: %g" % (step, train_accuracy, test_accuracy))
-
-            train_step.run(feed_dict={x: batch_data, y_: batch_labels, keep_prob: 0.5})
-
-        print("Test accuracy: %g" % accuracy.eval(feed_dict={
-            x: test_dataset, y_: test_labels, keep_prob: 1.0}))
-
+        label = prediction.eval(feed_dict={x: [input_image], keep_prob: 1.0}, session=session)[0]
+        print(label_map[label], end="")

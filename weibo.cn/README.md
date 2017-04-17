@@ -17,8 +17,10 @@ vertical projection to split the word, and CNN to train the dataset.
 ## Steps
 ### 1.Download some captchas.
 ``` shell
-mkdir ./downloader/captchas/
-python ./downloader/downloader.py
+cd ./downloader
+python ./downloader.py
+python ./clean.py
+
 ```
 ### 2.Split the letters from every captcha.
 ``` shell
@@ -29,7 +31,7 @@ mkdir dataset
 ### 3. Recognize the letters by human.
 You can check the results in [./trainer/training_set.zip](./trainer/training_set.zip)
 ``` shell
-cd ../trainer/
+cd ./trainer/
 unzip training_set.zip
 ```
 ### 4. Train the dataset.
@@ -40,7 +42,7 @@ mv ./weibo.cn-nn-weights ../recognizer/
 ```
 ### 5. Test the recognizer
 ```
-cd ../recognizer && cmake . && make
+cd ./recognizer && cmake . && make
 ./recognizer test1.png
 ./recognizer test2.png
 ./recognizer test3.png

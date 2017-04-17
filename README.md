@@ -1,7 +1,7 @@
 # captcha-break
 captcha break based on opencv2, tesseract-ocr and some machine learning algorithm.
 
-## Note 
+## Note
 I am studying tensorflow at present, the following breaks of captcha will base on tensorflow python api.
 
 ## Types
@@ -23,11 +23,11 @@ CAPTCHA from http://login.weibo.cn/login/
 
 ### [Weibo.cn-Type2](./weibo.cn2)
 ![](./weibo.cn2/weibo.cn2.png)  
-CAPTCHA from http://login.weibo.cn/login/
+the sometimes CAPTCHA from http://login.weibo.cn/login/
 
 ### [JiKeXueYuan](./jikexueyuan)
 ![](./jikexueyuan/jikexueyuan.png)   
-CAPTCHA from http://passport.jikexueyuan.com/sso/login
+CAPTCHA of http://passport.jikexueyuan.com/sso/verify
 
 ## License
 MIT

@@ -5,7 +5,7 @@ from PIL import Image
 import os
 
 image_url = "http://passport.jikexueyuan.com/sso/verify"
-for i in range(2000):
+for i in range(8000):
     try:
         resp = requests.get(image_url)
         filename = str(uuid.uuid4()) + ".gif"

@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 """
 
@@ -10,14 +10,14 @@ Point = namedtuple('Point', ['x', 'y'])
 
 import numpy as np
 
-def has_tranversed_the_point(x, y, tranversed_points:list):
+def has_tranversed_the_point(x, y, tranversed_points):
     for point in tranversed_points:
         if x == point.x and y == point.y:
             return True
 
     return False
 
-def find_connection_area(now_point, image:np.array, area:list, tranversed_points:list):
+def find_connection_area(now_point, image, area, tranversed_points):
 
     if now_point.x < 0 or now_point.x >= image.shape[1]\
         or now_point.y < 0 or now_point.y >= image.shape[0]:
@@ -62,7 +62,7 @@ class CaptchaUtils:
                     image[point.y][point.x] = 255
 
     @classmethod
-    def vertical_project(self, image:np.array, splits:list):
+    def vertical_project(self, image, splits):
         project = []
         for i in range(image.shape[1]):
             count = 0
@@ -84,19 +84,3 @@ class CaptchaUtils:
                 index += 1
 
             i += 1
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

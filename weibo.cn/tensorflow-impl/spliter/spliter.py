@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 """
 
@@ -23,7 +23,7 @@ class Spliter:
         if not os.path.isdir(save_dir):
             os.makedirs(save_dir)
 
-    def split_letters(self, filename, letters:list):
+    def split_letters(self, filename, letters):
         image = cv2.imread(filename, cv2.IMREAD_COLOR)
         #cv2.imshow("init", image)
 
@@ -37,8 +37,8 @@ class Spliter:
     def split_and_save(self, filename):
         letters = [0]*4
         self.split_letters(filename, letters)
-        for every_letter in letters:
-            self.save_image(every_letter)
+        for (i, every_letter) in enumerate(letters):
+            self.save_image(every_letter, i)
 
     def clear_noise(self, image):
         image = cv2.flip(image, -1,)
@@ -53,30 +53,28 @@ class Spliter:
 
         return image
 
-
-
-    def save_image(self, splited_image:np.array):
-        if splited_image.shape[1] > Spliter.WIDTH_STANDARD:return
-        if splited_image.shape[0] <=0 or splited_image.shape[1]<=0:return
+    def save_image(self, splited_image, i):
+        if splited_image.shape[1] > Spliter.WIDTH_STANDARD: return
+        if splited_image.shape[0] <=0 or splited_image.shape[1] <= 0: return
 
         out_width = Spliter.WIDTH_STANDARD
         out_height = Spliter.HEIGHT_STANDRAD
-        #cv::Mat out(out_height, out_width, CV_8UC1,cv::Scalar(255));
-        offset_x = abs(out_width - splited_image.shape[1])/2
-        offset_y = abs(out_height - splited_image.shape[0])/2
 
-        #print(splited_image, splited_image.shape)
-        TransMat = np.array([[1,0,offset_x],
+        offset_x = abs(out_width - splited_image.shape[1]) / 2
+        offset_y = abs(out_height - splited_image.shape[0]) / 2
+
+        TransMat = np.float32([[1,0,offset_x],
                              [0,1,offset_y]])
 
-        #print(TransMat)
+        # print(TransMat)
         new_image = cv2.warpAffine(splited_image, TransMat,
                                    (out_height, out_width)[::-1],
                                    borderValue=255)#reversed
 
 
-        path = os.path.join(self.save_dir, str(uuid.uuid4()))+'.png'
+        path = os.path.join(self.save_dir, str(i))+'.png'
         cv2.imwrite(path, new_image)
+
 
 def is_black(i, j, image):
     b = image[j, i][0]
@@ -176,29 +174,3 @@ def clear_horizontal_noise_line(image):
                 now_height -= 1
             else:
                 now_height += 1
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -41,7 +41,10 @@ def find_model_ckpt(model_ckpt_dir=os.curdir):
 
     return path
 
-def recognise_char_p():
+# We use `recognize` instead of `recognise` as a standard
+# as the reason of `color` instead of `colour`
+
+def recognize_char_p():
     label_map = load_label_map()
     model = load_model_nn()
 
@@ -113,7 +116,7 @@ def recognize_p():
 
 
 
-# start a recognise daemon process
+# start a recognize daemon process
 # for interactive in IPython
 # p.send('test.gif')
 # p.recv()
@@ -171,6 +174,7 @@ def recv(self, readall=False):
 
 def close(self):
     self.stdin.write(b'$exit\n')
+    self.kill()
 
 def enhance_popen(p):
     from types import MethodType
@@ -181,30 +185,45 @@ def enhance_popen(p):
 
     return p
 
-def start_recognise_char_daemon():
-    p = Popen([sys.executable, __file__, 'recognise_char'],
-              bufsize=102400,
-              stdin=PIPE, stdout=PIPE, stderr=PIPE)
-    p.stdin.encoding = 'utf8' # so we get `str` instead of `bytes` in p
-    p=enhance_popen(p)
-    return p
+__p_recognize = None # private var!!!
+def _close_recognize_process():
+    if __p_recognize is not None:
+        __p_recognize.send('$exit')
+        __p_recognize.kill()
 
-def start_recognize_daemon():
+def start_recognize_char_daemon(): #singleton include recognize_char because of saver.restore
+    global __p_recognize
+    if __p_recognize is not None and __p_recognize.poll() is None:
+        raise OSError('the checkpoint is used by another reconize process')
+    else:
+        p = Popen([sys.executable, __file__, 'recognize_char'],
+                  bufsize=102400,
+                  stdin=PIPE, stdout=PIPE, stderr=PIPE)
+        p.stdin.encoding = 'utf8' # so we get `str` instead of `bytes` in p
+        p=enhance_popen(p)
+        __p_recognize = p
+        return p
 
-    p = Popen([sys.executable, __file__],
-              bufsize=102400,
-              stdin=PIPE, stdout=PIPE, stderr=PIPE)
-    p.stdin.encoding = 'utf8' # so we get `str` instead of `bytes` in p
-    p=enhance_popen(p)
-    return p
+def start_recognize_daemon(): #singleton
+    global __p_recognize
+    if __p_recognize is not None and __p_recognize.poll() is None:
+        raise OSError('the checkpoint is used by another reconize process')
+    else:
+        p = Popen([sys.executable, __file__],
+                  bufsize=102400,
+                  stdin=PIPE, stdout=PIPE, stderr=PIPE)
+        p.stdin.encoding = 'utf8' # so we get `str` instead of `bytes` in p
+        p=enhance_popen(p)
+        __p_recognize = p
+        return p
 
 def cli():
     if len(sys.argv)==1:
         recognize_p()
     elif len(sys.argv) ==2:
-        if sys.argv[1] == 'recognise_char':
-            recognise_char_p()
-        elif sys.argv[1] == 'recognise':
+        if sys.argv[1] == 'recognize_char':
+            recognize_char_p()
+        elif sys.argv[1] == 'recognize':
             recognize_p()
 
 if __name__ == '__main__':

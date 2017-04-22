@@ -4,7 +4,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 try:
-    import cpickle as pickle
+    import cPickle as pickle
 except ImportError:
     import pickle
 

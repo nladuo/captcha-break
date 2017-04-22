@@ -8,7 +8,7 @@ from collections import namedtuple
 
 Point = namedtuple('Point', ['x', 'y'])
 
-import numpy as np
+
 
 def has_tranversed_the_point(x, y, tranversed_points):
     for point in tranversed_points:

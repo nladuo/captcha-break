@@ -1,16 +1,19 @@
 # -*- coding:utf-8 -*-
 #!/usr/bin/env python
-
 """
 
 """
-import uuid
+from __future__ import absolute_import
+from __future__ import print_function
+from __future__ import division
+
+
 import os
 
 import cv2
 import numpy as np
 
-from captcha_utils import CaptchaUtils, Point
+from captcha_utils import CaptchaUtils
 
 __all__ = ["Spliter"]
 
@@ -23,8 +26,17 @@ class Spliter:
         if not os.path.isdir(save_dir):
             os.makedirs(save_dir)
 
-    def split_letters(self, filename, letters):
-        image = cv2.imread(filename, cv2.IMREAD_COLOR)
+    def split_letters(self, path):
+        letters = [0]*4
+
+        bare_name, ext = os.path.splitext(path)
+        if ext == '.gif':
+            from PIL import Image
+            with Image.open(path) as im:
+                path = bare_name+'.png'
+                im.save(path)
+
+        image = cv2.imread(path, cv2.IMREAD_COLOR)
         #cv2.imshow("init", image)
 
         image = self.clear_noise(image)
@@ -34,11 +46,14 @@ class Spliter:
             for i in range(0, 8, 2):
                 letters[i//2] = image[0:image.shape[0], splits[i]:splits[i+1],].copy()
 
+        return letters
+
     def split_and_save(self, filename):
-        letters = [0]*4
-        self.split_letters(filename, letters)
+
+        letters = self.split_letters(filename)
         for (i, every_letter) in enumerate(letters):
-            self.save_image(every_letter, i)
+            every_letter = self.format_splited_image(every_letter)
+            self._save_image(every_letter, i)
 
     def clear_noise(self, image):
         image = cv2.flip(image, -1,)
@@ -53,7 +68,7 @@ class Spliter:
 
         return image
 
-    def save_image(self, splited_image, i):
+    def format_splited_image(self, splited_image):
         if splited_image.shape[1] > Spliter.WIDTH_STANDARD: return
         if splited_image.shape[0] <=0 or splited_image.shape[1] <= 0: return
 
@@ -70,10 +85,11 @@ class Spliter:
         new_image = cv2.warpAffine(splited_image, TransMat,
                                    (out_height, out_width)[::-1],
                                    borderValue=255)#reversed
+        return new_image
 
-
+    def _save_image(self, formatted_image, i):
         path = os.path.join(self.save_dir, str(i))+'.png'
-        cv2.imwrite(path, new_image)
+        cv2.imwrite(path, formatted_image)
 
 
 def is_black(i, j, image):

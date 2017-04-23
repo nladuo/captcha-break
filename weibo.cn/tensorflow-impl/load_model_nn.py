@@ -33,7 +33,7 @@ def max_pool_2x2(x):
                           strides=[1, 2, 2, 1], padding='SAME')
 
 
-def load_model_nn(): # `cnn` up to now
+def load_model_nn(alpha=5e-5): # `cnn` up to now
     with tf.Graph().as_default() as graph:
         x = tf.placeholder(tf.float32, shape=[None, IMAGE_SIZE])
 
@@ -84,7 +84,7 @@ def load_model_nn(): # `cnn` up to now
             )
             tf.summary.scalar('loss_function', loss)
 
-        optimizer = tf.train.AdamOptimizer(1e-4).minimize(loss)
+        optimizer = tf.train.AdamOptimizer(alpha).minimize(loss)
 
         correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y, 1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))

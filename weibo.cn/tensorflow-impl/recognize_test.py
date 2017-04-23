@@ -28,7 +28,8 @@ def cli():
 
     result_list = recognize(captcha_list)
     correct = 0
-    for label, result in zip(captcha_list, result_list):
+    for path, result in zip(captcha_list, result_list):
+        label = os.path.splitext(os.path.basename(path))[0][:4]
         print('%s %s '%(label, result), end='')
         if label.lower() == result.lower():
             print(True)

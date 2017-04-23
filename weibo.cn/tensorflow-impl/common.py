@@ -40,3 +40,23 @@ def load_label_map(pickle_dir=os.curdir):
                 pickle.dump(label_map, f2, protocol=2)
 
     return label_map
+
+def find_model_ckpt(model_ckpt_dir=os.curdir):
+    """Find Max Step model.ckpt"""
+    from distutils.version import LooseVersion
+    model_ckpt_tuple_list = []
+    for fn in os.listdir(model_ckpt_dir):
+        bare_fn, ext = os.path.splitext(fn)
+        if bare_fn.startswith('weibo.cn-model.ckpt') and ext=='.index':
+            version = bare_fn.split('weibo.cn-model.ckpt-')[1]
+            model_ckpt_tuple_list.append((version, bare_fn))
+
+    if len(model_ckpt_tuple_list) == 0:
+        raise FileNotFoundError('file like weibo.cn-model.ckpt')
+    model_ckpt_list = list(sorted(model_ckpt_tuple_list,
+                                  key=lambda item:LooseVersion(item[0])))
+    fn = model_ckpt_list[-1][1]
+    global_step = int(model_ckpt_list[-1][0])
+    path = os.path.join(model_ckpt_dir, fn)
+
+    return path, global_step

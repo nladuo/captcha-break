@@ -13,7 +13,7 @@ except ImportError:
 import tensorflow as tf
 
 from load_model_nn import load_model_nn
-
+from common import find_model_ckpt
 
 formatted_dataset_path = 'formatted_dataset.pickle'
 graph_log_dir = './logs'
@@ -56,9 +56,19 @@ if __name__ == '__main__':
         merged = tf.summary.merge_all()
         writer = tf.summary.FileWriter(graph_log_dir, session.graph)
         tf.global_variables_initializer().run()
-        print("Initialized")
+
 
         step = 0
+        try:
+            model_ckpt_path, global_step = find_model_ckpt('.checkpoint') #try to continue ....
+        except FileNotFoundError:
+            print("Initialized")
+        else: # try continue to train
+            saver.restore(session, model_ckpt_path)
+            step = global_step
+            print('found %s, step from %d'%(model_ckpt_path, step))
+
+        origin_step = step
         while True:
             offset = (step * batch_size) % (train_labels.shape[0] - batch_size)
             # Generate a minibatch.
@@ -95,7 +105,7 @@ if __name__ == '__main__':
                 print(("Step %d, Training accuracy: %g, Test accuracy: %g" %
                        (step, train_accuracy, test_accuracy)))
 
-                if test_accuracy > 0.99 or step>2000:
+                if test_accuracy > 0.99 or step-origin_step>4000:
                     if not os.path.isdir('.checkpoint'):
                         os.mkdir('.checkpoint')
                     save_dir = os.path.join(os.curdir, '.checkpoint')

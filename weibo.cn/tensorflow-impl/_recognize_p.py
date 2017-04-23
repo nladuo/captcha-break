@@ -15,31 +15,14 @@ import tensorflow as tf
 import numpy as np
 import cv2
 
-from common import load_label_map, IMAGE_SIZE
+from common import load_label_map, find_model_ckpt, IMAGE_SIZE
 from load_model_nn import load_model_nn
 import __init__ # run init
 from spliter import Spliter
 
 image_size = IMAGE_SIZE
 
-def find_model_ckpt(model_ckpt_dir=os.curdir):
-    """Find Max Step model.ckpt"""
-    from distutils.version import LooseVersion
-    model_ckpt_tuple_list = []
-    for fn in os.listdir(model_ckpt_dir):
-        if fn.startswith('weibo.cn-model.ckpt'):
-            version = fn.split('weibo.cn-model.ckpt')[1]
-            model_ckpt_tuple_list.append((version, fn))
 
-    if len(model_ckpt_tuple_list) == 0:
-        raise FileNotFoundError('file like weibo.cn-model.ckpt')
-    model_ckpt_list = list(sorted(model_ckpt_tuple_list,
-                                  key=lambda item:LooseVersion(item[0])))
-    fn = model_ckpt_list[-1][1]
-    fn = os.path.splitext(fn)[0] #remove ext
-    path = os.path.join(model_ckpt_dir, fn)
-
-    return path
 
 # We use `recognize` instead of `recognise` as a standard
 # as the reason of `color` instead of `colour`
@@ -53,7 +36,7 @@ def recognize_char_p():
     saver=model['saver']
     prediction = model['prediction']
     graph = model['graph']
-    model_ckpt_path = find_model_ckpt('.checkpoint')
+    model_ckpt_path, _ = find_model_ckpt('.checkpoint')
     #print('load check-point %s'%model_ckpt_path, file=sys.stderr)
     with tf.Session(graph=graph) as session:
         tf.global_variables_initializer().run()
@@ -84,7 +67,7 @@ def recognize_p():
     saver=model['saver']
     prediction = model['prediction']
     graph = model['graph']
-    model_ckpt_path = find_model_ckpt('.checkpoint')
+    model_ckpt_path, _ = find_model_ckpt('.checkpoint')
     #print('load check-point %s'%model_ckpt_path, file=sys.stderr)
     with tf.Session(graph=graph) as session:
         tf.global_variables_initializer().run()

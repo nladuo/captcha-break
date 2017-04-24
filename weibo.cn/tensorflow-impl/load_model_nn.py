@@ -12,8 +12,6 @@ import tensorflow as tf
 
 from common import IMAGE_SIZE, load_label_map, IMAGE_HEIGHT, IMAGE_WIDTH
 
-num_labels = len(load_label_map())
-
 def weight_variable(shape):
     initial = tf.truncated_normal(shape, stddev=0.1)
     return tf.Variable(initial)
@@ -34,6 +32,7 @@ def max_pool_2x2(x):
 
 
 def load_model_nn(alpha=5e-5): # `cnn` up to now
+    num_labels = len(load_label_map())
     with tf.Graph().as_default() as graph:
         x = tf.placeholder(tf.float32, shape=[None, IMAGE_SIZE])
 

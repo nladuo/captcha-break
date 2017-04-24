@@ -4,6 +4,7 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
+import os
 from _recognize_p import start_recognize_daemon
 
 
@@ -35,7 +36,9 @@ def recognize(captcha_path_set):
 
 def cli():
     import sys
-    captcha_path_set = sys.argv[1:]
+    captcha_path_set=[]
+    for captcha_path in sys.argv[1:]:
+        captcha_path_set.append(os.path.abspath(captcha_path))
 
     result_list = recognize(captcha_path_set)
     for result in result_list:

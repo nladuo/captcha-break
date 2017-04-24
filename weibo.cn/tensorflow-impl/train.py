@@ -9,6 +9,7 @@ try:
     import cPickle as pickle
 except ImportError:
     import pickle
+from argparse import ArgumentParser
 
 import tensorflow as tf
 
@@ -18,8 +19,7 @@ from common import find_model_ckpt
 formatted_dataset_path = 'formatted_dataset.pickle'
 graph_log_dir = './logs'
 
-if __name__ == '__main__':
-
+def train(alpha=5e-5):
     print("loading %s..."%formatted_dataset_path)
     with open(formatted_dataset_path, 'rb') as f:
         import sys
@@ -72,6 +72,7 @@ if __name__ == '__main__':
         while True:
             offset = (step * batch_size) % (train_labels.shape[0] - batch_size)
             # Generate a minibatch.
+            # `:` np.array op which from matlab
             batch_data = train_dataset[offset:(offset + batch_size), :]
             batch_labels = train_labels[offset:(offset + batch_size), :]
             #print(batch_data, batch_labels)
@@ -127,3 +128,16 @@ if __name__ == '__main__':
                    }
                )
               )
+
+def cli():
+    parser = ArgumentParser()
+    parser.add_argument('-a', '--alpha', type=float, default='5e-5',
+                        help='convergence raet for train')
+
+    kwargs = parser.parse_args().__dict__
+    #print(kwargs)
+    train(**kwargs)
+
+
+if __name__ == '__main__':
+    cli()

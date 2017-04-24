@@ -1,5 +1,0 @@
-*.pickle
-.idea/
-*.pyc
-checkpoint
-weibo.cn-model.ckpt*

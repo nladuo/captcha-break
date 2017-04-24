@@ -15,10 +15,19 @@ import tensorflow as tf
 import numpy as np
 import cv2
 
-from common import load_label_map, find_model_ckpt, IMAGE_SIZE
+from common import load_label_map, find_model_ckpt, home_dir, IMAGE_SIZE
 from load_model_nn import load_model_nn
-import __init__ # run init
-from spliter import Spliter
+
+tensorflow_impl_dir = os.path.dirname(__file__)
+weibo_cn_dir = os.path.dirname(tensorflow_impl_dir)
+spliter_dir = os.path.join(weibo_cn_dir, 'spliter')
+spliter_py_dir = os.path.join(spliter_dir, 'spliter_py')
+sys.path.append(spliter_py_dir)
+
+try:
+    from spliter import Spliter
+except ImportError:
+    print(sys.path)
 
 image_size = IMAGE_SIZE
 
@@ -36,7 +45,7 @@ def recognize_char_p():
     saver=model['saver']
     prediction = model['prediction']
     graph = model['graph']
-    model_ckpt_path, _ = find_model_ckpt('.checkpoint')
+    model_ckpt_path, _ = find_model_ckpt(os.path.join(home_dir, '.checkpoint'))
     #print('load check-point %s'%model_ckpt_path, file=sys.stderr)
     with tf.Session(graph=graph) as session:
         tf.global_variables_initializer().run()
@@ -67,7 +76,7 @@ def recognize_p():
     saver=model['saver']
     prediction = model['prediction']
     graph = model['graph']
-    model_ckpt_path, _ = find_model_ckpt('.checkpoint')
+    model_ckpt_path, _ = find_model_ckpt(os.path.join(home_dir, '.checkpoint'))
     #print('load check-point %s'%model_ckpt_path, file=sys.stderr)
     with tf.Session(graph=graph) as session:
         tf.global_variables_initializer().run()
@@ -125,6 +134,11 @@ def send(self, msg):
         self.stdin.write(msg+b'\n')
         self.stdin.flush()
     except OSError:
+        cracked = True
+    else:
+        cracked = False
+
+    if cracked:
         raise IOError('this process halted')
 
     _read_time = getattr(self, '_read_time', 0)
@@ -177,7 +191,8 @@ def _close_recognize_process():
 def start_recognize_char_daemon(): #singleton include recognize_char because of saver.restore
     global __p_recognize
     if __p_recognize is not None and __p_recognize.poll() is None:
-        raise OSError('the checkpoint is used by another reconize process')
+        raise OSError('the checkpoint is used by another recognize process\n'
+                      'use _close_recognize_process to close')
     else:
         p = Popen([sys.executable, __file__, 'recognize_char'],
                   bufsize=102400,
@@ -190,7 +205,8 @@ def start_recognize_char_daemon(): #singleton include recognize_char because of 
 def start_recognize_daemon(): #singleton
     global __p_recognize
     if __p_recognize is not None and __p_recognize.poll() is None:
-        raise OSError('the checkpoint is used by another reconize process')
+        raise OSError('the checkpoint is used by another recognize process\n'
+                      'use _close_recognize_process to close')
     else:
         p = Popen([sys.executable, __file__],
                   bufsize=102400,

@@ -16,7 +16,9 @@ IMAGE_WIDTH = 32
 IMAGE_HEIGHT = 32
 IMAGE_SIZE = IMAGE_HEIGHT * IMAGE_WIDTH
 
-def load_label_map(pickle_dir=os.curdir):
+home_dir = os.path.dirname(__file__) # not os.curdir!
+
+def load_label_map(pickle_dir=home_dir):
     label_map_pickle = os.path.join(pickle_dir, "label_map.pickle")
 
     formatted_dataset_pickle = os.path.join(pickle_dir,
@@ -41,7 +43,7 @@ def load_label_map(pickle_dir=os.curdir):
 
     return label_map
 
-def find_model_ckpt(model_ckpt_dir=os.curdir):
+def find_model_ckpt(model_ckpt_dir=home_dir):
     """Find Max Step model.ckpt"""
     from distutils.version import LooseVersion
     model_ckpt_tuple_list = []

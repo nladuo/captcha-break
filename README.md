@@ -6,7 +6,7 @@ captcha break based on opencv2, tesseract-ocr and some machine learning algorith
 ![](./basic/basic.jpg)  
 The simplest captcha breaking.
 
-### CSDN[[cpp](./csdn/cpp)]
+### CSDN[[cpp](./csdn/cpp)][[python](./csdn/python)]
 ![](./csdn/csdn.png)  
 CAPTCHA from http://download.csdn.net/
 

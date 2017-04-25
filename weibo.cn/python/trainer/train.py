@@ -5,13 +5,19 @@ from __future__ import print_function
 from __future__ import division
 import sys
 import os
+from argparse import ArgumentParser
+
 try:
     import cPickle as pickle
 except ImportError:
     import pickle
 
 import tensorflow as tf
-sys.path.append("../")
+
+trainer_dir =os.path.dirname(os.path.abspath(__file__))
+home_dir= os.path.dirname(trainer_dir)
+sys.path.append(home_dir)
+
 from common.load_model_nn import load_model_nn
 from common.common import find_model_ckpt
 
@@ -21,11 +27,10 @@ except NameError:
     # py2
     FileNotFoundError = IOError
 
-formatted_dataset_path = 'formatted_dataset.pickle'
-graph_log_dir = './logs'
+formatted_dataset_path = os.path.join(trainer_dir, 'formatted_dataset.pickle')
+graph_log_dir = os.path.join(trainer_dir, 'logs')
 
-if __name__ == '__main__':
-
+def train(alpha=5e-5):
     print("loading %s..." % formatted_dataset_path)
     with open(formatted_dataset_path, 'rb') as f:
         import sys
@@ -47,7 +52,7 @@ if __name__ == '__main__':
     print("test_labels:", test_labels.shape)
     print("num_labels:", num_labels)
 
-    model = load_model_nn()
+    model = load_model_nn(alpha)
     x = model['x']
     y = model['y']
     loss = model['loss']
@@ -57,7 +62,7 @@ if __name__ == '__main__':
     saver = model['saver']
     graph = model['graph']
 
-    save_dir = os.path.join(os.curdir, '.checkpoint')
+    save_dir = os.path.join(trainer_dir, '.checkpoint')
     print("Model saved path: ", save_dir)
 
     batch_size = 64
@@ -76,9 +81,7 @@ if __name__ == '__main__':
 
         step = 0
         try:
-            if not os.path.isdir('.checkpoint'):
-                os.mkdir('.checkpoint')
-            model_ckpt_path, global_step = find_model_ckpt('.checkpoint')  # try to continue ....
+            model_ckpt_path, global_step = find_model_ckpt()  # try to continue ....
         except FileNotFoundError:
             print("Initialized")
         else:  # try continue to train
@@ -120,13 +123,15 @@ if __name__ == '__main__':
                     }
                 )
 
-                print(("Step %d, Training accuracy: %g, Test accuracy: %g" %
+                print(("Step %5d, Training accuracy: %4f, Test accuracy: %4f" %
                        (step, train_accuracy, test_accuracy)))
 
                 if step % 100 == 0:  # save the model every 100 step
                     save_model(step)
 
-                if test_accuracy > 0.99 or step-origin_step > 4000:
+                if test_accuracy > 0.999 or step-origin_step > 2000:
+                    print('you can re-format dataset and give a smaller alpha '
+                          'to continue training')
                     save_model(step)
                     break
 
@@ -139,3 +144,17 @@ if __name__ == '__main__':
                       keep_prob: 1.0
                   })
               )
+
+def cli():
+
+    parser = ArgumentParser()
+    parser.add_argument('-a', '--alpha', type=float, default='5e-5',
+                        help='convergence rate for train default 5e-5')
+
+    kwargs = parser.parse_args().__dict__
+    #print(kwargs)
+    train(**kwargs)
+
+if __name__ == '__main__':
+    cli()
+

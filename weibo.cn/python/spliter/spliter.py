@@ -1,19 +1,20 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-
-
 from __future__ import print_function
 from __future__ import division
 
-
 import os
+import sys
+
 import cv2
 import numpy as np
-import sys
 import uuid
-from captcha_utils import CaptchaUtils
 
-sys.path.append("../")
+spliter_dir =os.path.dirname(os.path.abspath(__file__))
+home_dir= os.path.dirname(spliter_dir)
+sys.path.append(home_dir)
+sys.path.append(spliter_dir)
+from captcha_utils import CaptchaUtils
 from common.common import IMAGE_HEIGHT, IMAGE_WIDTH
 
 __all__ = ["Spliter"]

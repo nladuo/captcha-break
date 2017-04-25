@@ -14,13 +14,15 @@ import tensorflow as tf
 import numpy as np
 import cv2
 
-sys.path.append("../")
+home_dir= os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(home_dir)
 from common.common import load_label_map, find_model_ckpt, IMAGE_SIZE
 from common.load_model_nn import load_model_nn
 from spliter.spliter import Spliter
 
 image_size = IMAGE_SIZE
-
+if sys.version_info.major == 2:
+    input = raw_input
 
 def recognize_char_p():
     label_map = load_label_map()
@@ -31,7 +33,7 @@ def recognize_char_p():
     saver = model['saver']
     prediction = model['prediction']
     graph = model['graph']
-    model_ckpt_path, _ = find_model_ckpt('../trainer/.checkpoint')
+    model_ckpt_path, _ = find_model_ckpt()
     # print('load check-point %s'%model_ckpt_path, file=sys.stderr)
     with tf.Session(graph=graph) as session:
         tf.global_variables_initializer().run()
@@ -63,7 +65,7 @@ def recognize_p():
     saver = model['saver']
     prediction = model['prediction']
     graph = model['graph']
-    model_ckpt_path, _ = find_model_ckpt('../trainer/.checkpoint')
+    model_ckpt_path, _ = find_model_ckpt()
     print('load check-point %s' % model_ckpt_path, file=sys.stderr)
     with tf.Session(graph=graph) as session:
         tf.global_variables_initializer().run()
@@ -71,7 +73,7 @@ def recognize_p():
 
         while True:
             sys.stdout.flush()
-            captcha_path = raw_input().strip()
+            captcha_path = input().strip()
             # print("_recoginze", captcha_path)
             if captcha_path == '$exit':  # for close session
                 break

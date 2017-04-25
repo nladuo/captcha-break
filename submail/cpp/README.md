@@ -16,8 +16,8 @@ Library: opencv2 + libboost
 ## Steps
 ### 1.Download some captchas.
 ``` shell
-mkdir ./downloader/captchas/
-python ./downloader/downloader.py
+cd ./downloader/
+python downloader.py
 ```
 ### 2.Split the letters from captchas.  
 ``` shell

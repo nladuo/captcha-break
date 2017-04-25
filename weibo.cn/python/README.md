@@ -16,7 +16,7 @@ vertical projection to split the word, and CNN to train the dataset.
 
 ## Steps
 ### 1.Download some captchas.
-now is unavailable, see the `downloader/captchas.zip`.
+now is unavailable, see the backup at [captchas_backup.zip](../captchas_backup.zip).
 ### 2.Split the letters from every captcha.
 ``` shell
 cd ./spliter

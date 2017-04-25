@@ -15,7 +15,9 @@ from sklearn.model_selection import train_test_split
 import numpy as np
 from PIL import Image
 
-sys.path.append("../")
+trainer_dir =os.path.dirname(os.path.abspath(__file__))
+home_dir= os.path.dirname(trainer_dir)
+sys.path.append(home_dir)
 from common.common import IMAGE_SIZE
 
 
@@ -24,7 +26,7 @@ def load_dataset():
     labelset = []
     label_map = {}
 
-    base_dir = "./training_set/"
+    base_dir = os.path.join(trainer_dir, "training_set")
     labels = os.listdir(base_dir)
     index = 0
     for label in labels:
@@ -32,9 +34,9 @@ def load_dataset():
             continue
         print("loading:", label, "index:", index)
         try:
-            image_files = os.listdir(base_dir + label)
+            image_files = os.listdir(os.path.join(base_dir, label))
             for image_file in image_files:
-                image_path = base_dir + label + "/" + image_file
+                image_path = os.path.join(base_dir, label, image_file)
                 im = Image.open(image_path).convert('L')
                 dataset.append(np.asarray(im, dtype=np.float32))
                 # im = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
@@ -42,7 +44,8 @@ def load_dataset():
                 labelset.append(index)
             label_map[index] = label
             index += 1
-        except: pass
+        except:
+            raise
 
     return np.array(dataset), np.array(labelset), label_map
 
@@ -60,8 +63,7 @@ def _format_dataset(dataset, labels, image_size, num_labels):
     labels = (np.arange(num_labels) == labels[:, None]).astype(np.float32)
     return dataset, labels
 
-DEFAULT_FORMATTED_DATATSET_PATH = 'formatted_dataset.pickle'
-
+DEFAULT_FORMATTED_DATATSET_PATH = os.path.join(trainer_dir, 'formatted_dataset.pickle')
 
 def format_dataset(formatted_dataset_path=DEFAULT_FORMATTED_DATATSET_PATH,
                    log_file=io.StringIO()):

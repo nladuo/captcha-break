@@ -8,13 +8,14 @@ import sys
 import os
 from recognize import recognize
 
+recognize_dir = os.path.dirname(os.path.abspath(__file__))
 
 def cli():
 
     if len(sys.argv) > 1:
         path = sys.argv[1]
     else:
-        path = 'test_set'
+        path = os.path.join(recognize_dir, 'test_set')
 
     captcha_list = []
     for fn in os.listdir(path):
@@ -26,7 +27,7 @@ def cli():
     correct = 0
     for path, result in zip(captcha_list, result_list):
         label = os.path.splitext(os.path.basename(path))[0][:4]
-        print('%s %s ' % (label, result), end='')
+        print('%04s %04s ' % (label, result), end='')
         if label.lower() == result.lower():
             print(True)
             correct += 1

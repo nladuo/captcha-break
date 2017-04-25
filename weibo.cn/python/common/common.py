@@ -19,8 +19,9 @@ except NameError:
     # py2
     FileNotFoundError = IOError
 
-
-def load_label_map(pickle_dir="../trainer/"):
+home_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+trainer_dir = os.path.join(home_dir, 'trainer')
+def load_label_map(pickle_dir=trainer_dir):
     label_map_pickle = os.path.join(pickle_dir, "label_map.pickle")
 
     formatted_dataset_pickle = os.path.join(pickle_dir,
@@ -46,8 +47,11 @@ def load_label_map(pickle_dir="../trainer/"):
     return label_map
 
 
-def find_model_ckpt(model_ckpt_dir=os.curdir):
+def find_model_ckpt(model_ckpt_dir=os.path.join(trainer_dir, '.checkpoint')):
     """ Find Max Step model.ckpt """
+    if not os.path.isdir(model_ckpt_dir):
+        os.mkdir(model_ckpt_dir)
+
     from distutils.version import LooseVersion
     model_ckpt_tuple_list = []
     for fn in os.listdir(model_ckpt_dir):

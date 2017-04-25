@@ -43,8 +43,8 @@ class CaptchaUtils:
     def __init__(self):
         pass
 
-    @classmethod
-    def clear_peper_noise(self, image, max_adhesion_count):
+    @staticmethod
+    def clear_peper_noise(image, max_adhesion_count):
         areas = []
         tranversed_points = []
         for i in range(image.shape[1]):
@@ -60,8 +60,8 @@ class CaptchaUtils:
                 for point in area:
                     image[point.y][point.x] = 255
 
-    @classmethod
-    def vertical_project(self, image, splits):
+    @staticmethod
+    def vertical_project(image, splits):
         project = []
         for i in range(image.shape[1]):
             count = 0

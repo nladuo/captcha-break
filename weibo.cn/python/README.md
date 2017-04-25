@@ -16,17 +16,12 @@ vertical projection to split the word, and CNN to train the dataset.
 
 ## Steps
 ### 1.Download some captchas.
-``` shell
-cd ./downloader
-python ./downloader.py
-python ./clean.py
-
-```
+now is unavailable, see the `downloader/captchas.zip`.
 ### 2.Split the letters from every captcha.
 ``` shell
 cd ./spliter
 mkdir dataset
-python main.py
+python __main__.py
 ```
 ### 3. Recognize the letters by human.
 You can check the results in [./trainer/training_set.zip](./trainer/training_set.zip)
@@ -47,4 +42,4 @@ python recognizer test1.png test2.png test3.png test4.png
 ```
 
 ## About the Accuracy
-The accuracy is about 60%. 
+The accuracy is about 60%.

@@ -16,12 +16,7 @@ vertical projection to split the word, and CNN to train the dataset.
 
 ## Steps
 ### 1.Download some captchas.
-``` shell
-cd ./downloader
-python ./downloader.py
-python ./clean.py
-
-```
+now is unavailable, see the `downloader/captchas.zip`.
 ### 2.Split the letters from every captcha.
 ``` shell
 cd ./spliter && cmake . && make
@@ -51,4 +46,3 @@ cd ./recognizer && cmake . && make
 
 ## About the Accuracy
 The accuracy is about 60%.
-

@@ -14,7 +14,8 @@ import tensorflow as tf
 import numpy as np
 import cv2
 
-sys.path.append("../")
+home_dir= os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(home_dir)
 from common.common import load_label_map, find_model_ckpt, IMAGE_SIZE
 from common.load_model_nn import load_model_nn
 from spliter.spliter import Spliter

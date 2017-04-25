@@ -11,7 +11,11 @@ except ImportError:
     import pickle
 
 import tensorflow as tf
-sys.path.append("../")
+
+trainer_dir =os.path.dirname(os.path.abspath(__file__))
+home_dir= os.path.dirname(trainer_dir)
+sys.path.append(home_dir)
+
 from common.load_model_nn import load_model_nn
 from common.common import find_model_ckpt
 
@@ -57,7 +61,7 @@ if __name__ == '__main__':
     saver = model['saver']
     graph = model['graph']
 
-    save_dir = os.path.join(os.curdir, '.checkpoint')
+    save_dir = os.path.join(trainer_dir, '.checkpoint')
     print("Model saved path: ", save_dir)
 
     batch_size = 64
@@ -126,7 +130,8 @@ if __name__ == '__main__':
                 if step % 100 == 0:  # save the model every 100 step
                     save_model(step)
 
-                if test_accuracy > 0.99 or step-origin_step > 4000:
+                if test_accuracy > 0.999 or step-origin_step > 2000:
+                    print('you can reformart dataset and continue to train')
                     save_model(step)
                     break
 

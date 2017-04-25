@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-
 from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import division
@@ -10,7 +9,7 @@ import tensorflow as tf
 
 from .common import IMAGE_SIZE, load_label_map, IMAGE_HEIGHT, IMAGE_WIDTH
 
-num_labels = len(load_label_map())
+
 
 
 def weight_variable(shape):
@@ -33,6 +32,7 @@ def max_pool_2x2(x):
 
 
 def load_model_nn(alpha=5e-5):  # `cnn` up to now
+    num_labels = len(load_label_map())
     with tf.Graph().as_default() as graph:
         x = tf.placeholder(tf.float32, shape=[None, IMAGE_SIZE])
 

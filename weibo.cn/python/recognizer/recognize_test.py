@@ -16,7 +16,6 @@ def cli():
     else:
         path = 'test_set'
 
-    capcha_tuple_list = []
     captcha_list = []
     for fn in os.listdir(path):
         name, ext = os.path.splitext(fn)

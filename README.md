@@ -2,7 +2,7 @@
 captcha break based on opencv2, tesseract-ocr and some machine learning algorithm.
 
 ## Types
-### Basic[[cpp](./basic/cpp)]
+### Basic[[cpp](./basic/cpp)][[python](./basic/python)]
 ![](./basic/basic.jpg)  
 The simplest captcha breaking.
 

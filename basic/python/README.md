@@ -9,19 +9,15 @@ finished.
 
 ## Environment
 Programing Language: C++  
-Library: opencv2 + libboost + tesseract-ocr
+Library: pillow + pytesseract
 
 ## Technique
 use tesseract-ocr directly.
 
 ## Steps
-### 1.build
+### 1.recognize
 ``` shell
-cmake . && make
-```
-### 2.recognize
-``` shell
-./recognizer test1.jpg
-./recognizer test2.jpg
-./recognizer test3.jpg
+python recognizer.py test1.jpg
+python recognizer.py test2.jpg
+python recognizer.py test3.jpg
 ```

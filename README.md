@@ -16,7 +16,8 @@ CAPTCHA from http://submail.cn/sms
 
 ### Weibo.cn[[cpp](./weibo.cn/cpp)][[python](./weibo.cn/python)]
 ![](./weibo.cn/weibo.cn.png)  
-CAPTCHA from http://login.weibo.cn/login/. Not available at present!
+CAPTCHA from http://login.weibo.cn/login/.  
+(Note: This website has changed now, and the captcha is not available!)
 
 ### JiKeXueYuan[[python](./jikexueyuan/python)]
 ![](./jikexueyuan/jikexueyuan.png)   

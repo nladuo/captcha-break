@@ -1,18 +1,17 @@
+#!/usr/bin/env python
 # -*- coding:utf-8 -*-
-#!/usr/bin/env python3
 
-"""
 
-"""
 from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import division
 
 import tensorflow as tf
 
-from common import IMAGE_SIZE, load_label_map, IMAGE_HEIGHT, IMAGE_WIDTH
+from .common import IMAGE_SIZE, load_label_map, IMAGE_HEIGHT, IMAGE_WIDTH
 
 num_labels = len(load_label_map())
+
 
 def weight_variable(shape):
     initial = tf.truncated_normal(shape, stddev=0.1)
@@ -33,7 +32,7 @@ def max_pool_2x2(x):
                           strides=[1, 2, 2, 1], padding='SAME')
 
 
-def load_model_nn(alpha=5e-5): # `cnn` up to now
+def load_model_nn(alpha=5e-5):  # `cnn` up to now
     with tf.Graph().as_default() as graph:
         x = tf.placeholder(tf.float32, shape=[None, IMAGE_SIZE])
 
@@ -75,8 +74,6 @@ def load_model_nn(alpha=5e-5): # `cnn` up to now
         y_conv = tf.add(tf.matmul(fc_layer_drop, output_layer_weight),
                         output_layer_bias)
 
-
-
         y = tf.placeholder(tf.float32, shape=[None, num_labels])
         with tf.name_scope('loss_function'):
             loss = tf.reduce_mean(
@@ -88,17 +85,17 @@ def load_model_nn(alpha=5e-5): # `cnn` up to now
 
         correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y, 1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-        prediction = tf.argmax(y_conv, 1) # for recognise
-        saver = tf.train.Saver()
-        model = {'x':x,
-                 'y':y,
-                 'optimizer':optimizer,
-                 'loss':loss,
-                 'keep_prob':keep_prob,
-                 'accuracy':accuracy,
-                 'prediction':prediction,
-                 'saver':saver,
-                 'graph':graph
+        prediction = tf.argmax(y_conv, 1)  # for recognise
+        saver = tf.train.Saver(max_to_keep=1)
+        model = {'x': x,
+                 'y': y,
+                 'optimizer': optimizer,
+                 'loss': loss,
+                 'keep_prob': keep_prob,
+                 'accuracy': accuracy,
+                 'prediction': prediction,
+                 'saver': saver,
+                 'graph': graph
                  }
 
     return model

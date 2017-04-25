@@ -8,7 +8,7 @@ namespace fs = boost::filesystem;
 
 int main(int argc, char *argv[])
 {
-    fs::path captchas_path("../../downloader/captchas/");
+    fs::path captchas_path("../downloader/captchas/");
     std::vector<std::string> images;
 
     //get all captcha files
@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 
     //split all captchas
     std::vector<std::string>::iterator itr = images.begin();
-    Spliter spliter("../dataset/");
+    Spliter spliter("./dataset/");
     for (;itr != images.end(); ++itr)
     {
         std::cout<<*itr<<std::endl;

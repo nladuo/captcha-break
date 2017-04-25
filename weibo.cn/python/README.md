@@ -7,8 +7,8 @@ CAPTCHA from http://login.weibo.cn/login/
 finshied.
 
 ## Enviorment
-Programing Language: C++  
-Library: opencv2 + libboost
+Programing Language: Python  
+Library: Tensorflow-1.0 + scikit-learn-0.18 + Pillow + opencv-python
 
 ## Technique
 use some computer vision algorithm to clean the peper noise and noise line,
@@ -24,9 +24,9 @@ python ./clean.py
 ```
 ### 2.Split the letters from every captcha.
 ``` shell
-cd ./spliter && cmake . && make
+cd ./spliter
 mkdir dataset
-./spliter
+python main.py
 ```
 ### 3. Recognize the letters by human.
 You can check the results in [./trainer/training_set.zip](./trainer/training_set.zip)
@@ -36,19 +36,15 @@ unzip training_set.zip
 ```
 ### 4. Train the dataset.
 ```
-cmake . && make
-./trainer
-mv ./weibo.cn-nn-weights ../recognizer/
+cd ./trainer/
+python format_dataset.py
+python train.py
 ```
 ### 5. Test the recognizer
 ```
-cd ./recognizer && cmake . && make
-./recognizer test1.png
-./recognizer test2.png
-./recognizer test3.png
-./recognizer test4.png
+cd ./recognizer
+python recognizer test1.png test2.png test3.png test4.png
 ```
 
 ## About the Accuracy
-The accuracy is about 60%.
-
+The accuracy is about 60%. 

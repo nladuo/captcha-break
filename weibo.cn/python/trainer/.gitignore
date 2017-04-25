@@ -1,0 +1,5 @@
+.checkpoint/
+*.pickle
+training_set/
+removeCR.py
+logs/

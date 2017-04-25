@@ -3,7 +3,7 @@
 from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import division
-
+import sys
 import os
 try:
     import cPickle as pickle
@@ -11,16 +11,22 @@ except ImportError:
     import pickle
 
 import tensorflow as tf
+sys.path.append("../")
+from common.load_model_nn import load_model_nn
+from common.common import find_model_ckpt
 
-from load_model_nn import load_model_nn
-from common import find_model_ckpt
+try:
+    FileNotFoundError
+except NameError:
+    # py2
+    FileNotFoundError = IOError
 
 formatted_dataset_path = 'formatted_dataset.pickle'
 graph_log_dir = './logs'
 
 if __name__ == '__main__':
 
-    print("loading %s..."%formatted_dataset_path)
+    print("loading %s..." % formatted_dataset_path)
     with open(formatted_dataset_path, 'rb') as f:
         import sys
         if sys.version_info.major == 3:
@@ -51,22 +57,34 @@ if __name__ == '__main__':
     saver = model['saver']
     graph = model['graph']
 
+    save_dir = os.path.join(os.curdir, '.checkpoint')
+    print("Model saved path: ", save_dir)
+
     batch_size = 64
+
+    def save_model(_step):
+        saver.save(
+            session,
+            os.path.join(save_dir, 'weibo.cn-model.ckpt'),
+            global_step=_step
+        )
+
     with tf.Session(graph=graph) as session:
         merged = tf.summary.merge_all()
         writer = tf.summary.FileWriter(graph_log_dir, session.graph)
         tf.global_variables_initializer().run()
 
-
         step = 0
         try:
-            model_ckpt_path, global_step = find_model_ckpt('.checkpoint') #try to continue ....
+            if not os.path.isdir('.checkpoint'):
+                os.mkdir('.checkpoint')
+            model_ckpt_path, global_step = find_model_ckpt('.checkpoint')  # try to continue ....
         except FileNotFoundError:
             print("Initialized")
-        else: # try continue to train
+        else:  # try continue to train
             saver.restore(session, model_ckpt_path)
             step = global_step
-            print('found %s, step from %d'%(model_ckpt_path, step))
+            print('found %s, step from %d' % (model_ckpt_path, step))
 
         origin_step = step
         while True:
@@ -74,7 +92,7 @@ if __name__ == '__main__':
             # Generate a minibatch.
             batch_data = train_dataset[offset:(offset + batch_size), :]
             batch_labels = train_labels[offset:(offset + batch_size), :]
-            #print(batch_data, batch_labels)
+            # print(batch_data, batch_labels)
             session.run(
                 [optimizer, loss],
                 feed_dict={
@@ -85,7 +103,7 @@ if __name__ == '__main__':
             )
             step += 1
             if step % 50 == 0:
-                train_accuracy=session.run(
+                train_accuracy = session.run(
                     accuracy,
                     feed_dict={
                         x: batch_data,
@@ -93,7 +111,7 @@ if __name__ == '__main__':
                         keep_prob: 1.0
                     }
                 )
-                test_accuracy=session.run(
+                test_accuracy = session.run(
                     accuracy,
                     feed_dict={
                         x: test_dataset,
@@ -105,25 +123,19 @@ if __name__ == '__main__':
                 print(("Step %d, Training accuracy: %g, Test accuracy: %g" %
                        (step, train_accuracy, test_accuracy)))
 
-                if test_accuracy > 0.99 or step-origin_step>4000:
-                    if not os.path.isdir('.checkpoint'):
-                        os.mkdir('.checkpoint')
-                    save_dir = os.path.join(os.curdir, '.checkpoint')
-                    save_path = saver.save(
-                        session,
-                        os.path.join(save_dir, 'weibo.cn-model.ckpt'),
-                        global_step=step
-                    )
-                    print("Model saved in file: ", save_path)
+                if step % 100 == 0:  # save the model every 100 step
+                    save_model(step)
+
+                if test_accuracy > 0.99 or step-origin_step > 4000:
+                    save_model(step)
                     break
 
         print("Test accuracy: %g" %
-               session.run(
-                   accuracy,
-                   feed_dict={
-                       x: test_dataset,
-                       y: test_labels,
-                       keep_prob: 1.0
-                   }
-               )
+              session.run(
+                  accuracy,
+                  feed_dict={
+                      x: test_dataset,
+                      y: test_labels,
+                      keep_prob: 1.0
+                  })
               )

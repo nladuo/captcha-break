@@ -1,9 +1,6 @@
+#!/usr/bin/env python
 # -*- coding:utf-8 -*-
-#!/usr/bin/env python3
 
-"""
-
-"""
 import os
 try:
     import cPickle as pickle
@@ -16,7 +13,14 @@ IMAGE_WIDTH = 32
 IMAGE_HEIGHT = 32
 IMAGE_SIZE = IMAGE_HEIGHT * IMAGE_WIDTH
 
-def load_label_map(pickle_dir=os.curdir):
+try:
+    FileNotFoundError
+except NameError:
+    # py2
+    FileNotFoundError = IOError
+
+
+def load_label_map(pickle_dir="../trainer/"):
     label_map_pickle = os.path.join(pickle_dir, "label_map.pickle")
 
     formatted_dataset_pickle = os.path.join(pickle_dir,
@@ -26,7 +30,7 @@ def load_label_map(pickle_dir=os.curdir):
     if os.path.exists(label_map_pickle):
         with open(label_map_pickle, 'rb') as f:
             if sys.version_info.major == 3:
-                label_map = pickle.load(f, encoding='latin1')# compatiable with python2 pickle
+                label_map = pickle.load(f, encoding='latin1')  # compatiable with python2 pickle
             else:
                 label_map = pickle.load(f)
     else:
@@ -41,20 +45,21 @@ def load_label_map(pickle_dir=os.curdir):
 
     return label_map
 
+
 def find_model_ckpt(model_ckpt_dir=os.curdir):
-    """Find Max Step model.ckpt"""
+    """ Find Max Step model.ckpt """
     from distutils.version import LooseVersion
     model_ckpt_tuple_list = []
     for fn in os.listdir(model_ckpt_dir):
         bare_fn, ext = os.path.splitext(fn)
-        if bare_fn.startswith('weibo.cn-model.ckpt') and ext=='.index':
+        if bare_fn.startswith('weibo.cn-model.ckpt') and ext == '.index':
             version = bare_fn.split('weibo.cn-model.ckpt-')[1]
             model_ckpt_tuple_list.append((version, bare_fn))
 
     if len(model_ckpt_tuple_list) == 0:
         raise FileNotFoundError('file like weibo.cn-model.ckpt')
     model_ckpt_list = list(sorted(model_ckpt_tuple_list,
-                                  key=lambda item:LooseVersion(item[0])))
+                                  key=lambda item: LooseVersion(item[0])))
     fn = model_ckpt_list[-1][1]
     global_step = int(model_ckpt_list[-1][0])
     path = os.path.join(model_ckpt_dir, fn)

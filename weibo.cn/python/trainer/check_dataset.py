@@ -14,8 +14,8 @@ import numpy as np
 def check_dataset(dataset, labels, label_map, index):
     data = np.uint8(dataset[index]).reshape((32, 32))
     i = np.argwhere(labels[index] == 1)[0][0]
-    import matplotlib.pyplot as plt # im.show may not be implemented
-                                    #  in opencv-python on Tk GUI (such as Linux)
+    import matplotlib.pyplot as plt  # im.show may not be implemented
+                                     #  in opencv-python on Tk GUI (such as Linux)
     import pylab
     plt.ion()
     plt.imshow(data)

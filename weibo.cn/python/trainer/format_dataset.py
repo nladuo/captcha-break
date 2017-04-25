@@ -1,6 +1,5 @@
-#!/usr/bin/env python3
-
-from __future__ import absolute_import
+#!/usr/bin/env python
+# coding:utf-8
 from __future__ import print_function
 from __future__ import division
 
@@ -14,30 +13,32 @@ except ImportError:
 
 from sklearn.model_selection import train_test_split
 import numpy as np
-import cv2
+from PIL import Image
 
-from common import IMAGE_SIZE
+sys.path.append("../")
+from common.common import IMAGE_SIZE
+
 
 def load_dataset():
     dataset = []
     labelset = []
     label_map = {}
 
-    base_dir = "../trainer/training_set/"
+    base_dir = "./training_set/"
     labels = os.listdir(base_dir)
     index = 0
     for label in labels:
-        if label == "ERROR" or label == ".DS_Store": 
+        if label == "ERROR" or label == ".DS_Store":
             continue
         print("loading:", label, "index:", index)
         try:
             image_files = os.listdir(base_dir + label)
             for image_file in image_files:
                 image_path = base_dir + label + "/" + image_file
-                #im = Image.open(image_path).convert('L')
-                #dataset.append(np.asarray(im, dtype=np.float32))
-                im = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-                dataset.append(im)
+                im = Image.open(image_path).convert('L')
+                dataset.append(np.asarray(im, dtype=np.float32))
+                # im = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+                # dataset.append(im)
                 labelset.append(index)
             label_map[index] = label
             index += 1
@@ -60,6 +61,8 @@ def _format_dataset(dataset, labels, image_size, num_labels):
     return dataset, labels
 
 DEFAULT_FORMATTED_DATATSET_PATH = 'formatted_dataset.pickle'
+
+
 def format_dataset(formatted_dataset_path=DEFAULT_FORMATTED_DATATSET_PATH,
                    log_file=io.StringIO()):
 
@@ -93,6 +96,7 @@ def format_dataset(formatted_dataset_path=DEFAULT_FORMATTED_DATATSET_PATH,
 
     print("dataset has saved at %s"%formatted_dataset_path, file=log_file)
     print("load_model has finished", file=log_file)
+
 
 def cli():
     import sys

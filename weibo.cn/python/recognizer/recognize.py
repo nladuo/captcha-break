@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 # coding:utf-8
 
-from __future__ import absolute_import
 from __future__ import print_function
-
 from _recognize_p import start_recognize_daemon
 
 
@@ -24,7 +22,7 @@ def recognize(captcha_path_set):
             raise OSError('the recognize daemon process cracked up :(')
         result = p.stdout.readline().strip().decode()
         result_set.append(result)
-        #print(result)
+        # print("result:", result)
 
     p.stdin.write(b'$exit\n')
     p.stdin.flush()
@@ -33,9 +31,11 @@ def recognize(captcha_path_set):
 
     return result_set
 
+
 def cli():
     import sys
     captcha_path_set = sys.argv[1:]
+    # print(captcha_path_set)
 
     result_list = recognize(captcha_path_set)
     for result in result_list:

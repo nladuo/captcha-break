@@ -11,7 +11,7 @@ void Spliter::split_letters(std::string filename, cv::Mat letters[4])
 
     //read the image
     cv::Mat image =  cv::imread (filename, CV_LOAD_IMAGE_COLOR);
-    cv::imshow ("init", image);
+    cv::imshow ("1", image);
 
     // clean noise line
     this->clean_noise(image);
@@ -74,7 +74,10 @@ void Spliter::clean_noise(cv::Mat &image)
 {
     //clean noise line
     cv::flip (image, image, -1);
+    cv::imshow("2", image);
     clear_horizontal_noise_line(image);
+    cv::imshow("3", image);
+    cv::waitKey(0);
     cv::flip (image, image, -1);
     clear_horizontal_noise_line(image);
     clear_color(image);
@@ -127,10 +130,11 @@ int get_horizontal_noise_line_width(cv::Mat &image, int now_height, int now_widt
           && image.at<cv::Vec3b>(now_height, end_width)[0] < 12
           && image.at<cv::Vec3b>(now_height, end_width)[1] < 12
           && image.at<cv::Vec3b>(now_height, end_width)[2] < 12){
-//        cout<<
-//          int(image.at<cv::Vec3b>(now_height, end_width)[0])<< " "<<
-//          int(image.at<cv::Vec3b>(now_height, end_width)[1])<< " "<<
-//          int(image.at<cv::Vec3b>(now_height, end_width)[2])<< " "<<endl;
+        
+        // cout<<
+        //   int(image.at<cv::Vec3b>(now_height, end_width)[0])<< " "<<
+        //   int(image.at<cv::Vec3b>(now_height, end_width)[1])<< " "<<
+        //   int(image.at<cv::Vec3b>(now_height, end_width)[2])<< " "<<endl;
         end_width++;
     }
     return end_width - now_width;
@@ -155,12 +159,13 @@ void clear_horizontal_noise_line(cv::Mat &image)
         }
     }
     if(!has_find) return;
-    //cout<<"first:"<<first_height<<endl;
+    cout<<"first:"<<first_height<<endl;
+    exit(0);
     int now_width = 0;
     int now_height = first_height;
     while(now_width < image.size().width){
         int width = get_horizontal_noise_line_width(image, now_height, now_width);
-        //cout<<now_width<<"  "<<now_height<< " width:"<<width<<endl;
+        cout<<now_width<<"  "<<now_height<< " width:"<<width<<endl;
         //clear the horizontal noise line
         for(int i = now_width; i < now_width + width; i++){
             int top_num = 0;

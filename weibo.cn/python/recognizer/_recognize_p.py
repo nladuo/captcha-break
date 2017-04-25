@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # coding:utf-8
-from __future__ import absolute_import
 from __future__ import print_function
 
 import os
@@ -15,17 +14,13 @@ import tensorflow as tf
 import numpy as np
 import cv2
 
-from common import load_label_map, find_model_ckpt, IMAGE_SIZE
-from load_model_nn import load_model_nn
-import __init__ # run init
-from spliter import Spliter
+sys.path.append("../")
+from common.common import load_label_map, find_model_ckpt, IMAGE_SIZE
+from common.load_model_nn import load_model_nn
+from spliter.spliter import Spliter
 
 image_size = IMAGE_SIZE
 
-
-
-# We use `recognize` instead of `recognise` as a standard
-# as the reason of `color` instead of `colour`
 
 def recognize_char_p():
     label_map = load_label_map()
@@ -33,11 +28,11 @@ def recognize_char_p():
 
     x = model['x']
     keep_prob = model['keep_prob']
-    saver=model['saver']
+    saver = model['saver']
     prediction = model['prediction']
     graph = model['graph']
-    model_ckpt_path, _ = find_model_ckpt('.checkpoint')
-    #print('load check-point %s'%model_ckpt_path, file=sys.stderr)
+    model_ckpt_path, _ = find_model_ckpt('../trainer/.checkpoint')
+    # print('load check-point %s'%model_ckpt_path, file=sys.stderr)
     with tf.Session(graph=graph) as session:
         tf.global_variables_initializer().run()
         saver.restore(session, model_ckpt_path)
@@ -45,7 +40,7 @@ def recognize_char_p():
         while True:
             sys.stdout.flush()
             captcha_path = input().strip()
-            if captcha_path == '$exit': # for close session
+            if captcha_path == '$exit':  # for close session
                 break
             im = np.reshape(cv2.imread(captcha_path, cv2.IMREAD_GRAYSCALE), IMAGE_SIZE)
             label = prediction.eval(feed_dict={x: [im], keep_prob: 1.0}, session=session)[0]
@@ -58,25 +53,27 @@ def recognize_p():
     captcha_path
     $exit to exit
     """
+    # print("recognize_p")
 
     label_map = load_label_map()
     model = load_model_nn()
 
     x = model['x']
     keep_prob = model['keep_prob']
-    saver=model['saver']
+    saver = model['saver']
     prediction = model['prediction']
     graph = model['graph']
-    model_ckpt_path, _ = find_model_ckpt('.checkpoint')
-    #print('load check-point %s'%model_ckpt_path, file=sys.stderr)
+    model_ckpt_path, _ = find_model_ckpt('../trainer/.checkpoint')
+    print('load check-point %s' % model_ckpt_path, file=sys.stderr)
     with tf.Session(graph=graph) as session:
         tf.global_variables_initializer().run()
         saver.restore(session, model_ckpt_path)
 
         while True:
             sys.stdout.flush()
-            captcha_path = input().strip()
-            if captcha_path == '$exit': # for close session
+            captcha_path = raw_input().strip()
+            # print("_recoginze", captcha_path)
+            if captcha_path == '$exit':  # for close session
                 break
 
             spliter = Spliter(os.curdir)
@@ -97,13 +94,12 @@ def recognize_p():
 
             sys.stdout.write('\n')
 
-
-
 # start a recognize daemon process
 # for interactive in IPython
 # p.send('test.gif')
 # p.recv()
 # p.close()
+
 
 def send(self, msg):
     """Interactive Tools
@@ -142,39 +138,43 @@ def recv(self, readall=False):
         raise IOError('you should send a value before recv')
 
     if readall:
-        msg_list=[]
+        msg_list = []
         for i in range(_read_time):
             msg_list.append(self.stdout.readline().strip().decode())
         msg = ''.join(msg_list)
         _read_time = 0
     else:
-        msg=self.stdout.readline().strip().decode()
+        msg = self.stdout.readline().strip().decode()
         _read_time -= 1
-
 
     setattr(self, '_read_time', _read_time)
     return msg
+
 
 def close(self):
     self.stdin.write(b'$exit\n')
     self.kill()
 
+
 def enhance_popen(p):
     from types import MethodType
 
-    p.send=MethodType(send, p)
-    p.recv=MethodType(recv, p)
-    p.close=MethodType(close, p)
+    p.send = MethodType(send, p)
+    p.recv = MethodType(recv, p)
+    p.close = MethodType(close, p)
 
     return p
 
-__p_recognize = None # private var!!!
+__p_recognize = None  # private var!!!
+
+
 def _close_recognize_process():
     if __p_recognize is not None:
         __p_recognize.send('$exit')
         __p_recognize.kill()
 
-def start_recognize_char_daemon(): #singleton include recognize_char because of saver.restore
+
+def start_recognize_char_daemon():  # singleton include recognize_char because of saver.restore
     global __p_recognize
     if __p_recognize is not None and __p_recognize.poll() is None:
         raise OSError('the checkpoint is used by another reconize process')
@@ -182,12 +182,13 @@ def start_recognize_char_daemon(): #singleton include recognize_char because of 
         p = Popen([sys.executable, __file__, 'recognize_char'],
                   bufsize=102400,
                   stdin=PIPE, stdout=PIPE, stderr=PIPE)
-        p.stdin.encoding = 'utf8' # so we get `str` instead of `bytes` in p
-        p=enhance_popen(p)
+        # p.stdin.encoding = 'utf8'  # so we get `str` instead of `bytes` in p
+        p = enhance_popen(p)
         __p_recognize = p
         return p
 
-def start_recognize_daemon(): #singleton
+
+def start_recognize_daemon():  # singleton
     global __p_recognize
     if __p_recognize is not None and __p_recognize.poll() is None:
         raise OSError('the checkpoint is used by another reconize process')
@@ -195,15 +196,17 @@ def start_recognize_daemon(): #singleton
         p = Popen([sys.executable, __file__],
                   bufsize=102400,
                   stdin=PIPE, stdout=PIPE, stderr=PIPE)
-        p.stdin.encoding = 'utf8' # so we get `str` instead of `bytes` in p
-        p=enhance_popen(p)
+        # p.stdin.encoding = 'utf8'  # so we get `str` instead of `bytes` in p
+        p = enhance_popen(p)
         __p_recognize = p
         return p
 
+
 def cli():
-    if len(sys.argv)==1:
+    # print(sys.argv)
+    if len(sys.argv) == 1:
         recognize_p()
-    elif len(sys.argv) ==2:
+    elif len(sys.argv) == 2:
         if sys.argv[1] == 'recognize_char':
             recognize_char_p()
         elif sys.argv[1] == 'recognize':
@@ -211,11 +214,3 @@ def cli():
 
 if __name__ == '__main__':
     cli()
-
-
-
-
-
-
-
-

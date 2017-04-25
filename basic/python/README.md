@@ -8,7 +8,7 @@ The simplest captcha breaking.
 finished.  
 
 ## Environment
-Programing Language: C++  
+Programing Language: Python2.7  
 Library: pillow + pytesseract
 
 ## Technique

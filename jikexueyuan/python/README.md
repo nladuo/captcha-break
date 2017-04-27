@@ -5,7 +5,7 @@ CAPTCHA of http://passport.jikexueyuan.com/sso/verify
 ![](../jikexueyuan.png)
 
 ## Enviorment
-Programing Language: Python  
+Programing Language: Python2.7  
 Library: Tensorflow-1.0 + pillow + scikit-learn-0.18
 
 ## Status

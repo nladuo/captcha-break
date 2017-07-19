@@ -3,6 +3,8 @@ import os
 from img_process import rotate_and_cut
 import random
 import math
+from utils import str2vec
+import numpy as np
 
 
 def load_templates():
@@ -33,5 +35,13 @@ def create_captcha(templates):
     return captcha, captcha_str
 
 
+def gen_dataset(num, templates):
+    # print("generating %d dataset..." % num)
+    dataset = []
+    labels = []
+    for _ in range(num):
+        captcha, captcha_str = create_captcha(templates)
+        dataset.append(np.asarray(captcha.convert("L")).reshape([40 * 100]) / 255)
+        labels.append(str2vec(captcha_str))
 
-
+    return np.array(dataset), np.array(labels)

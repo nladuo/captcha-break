@@ -75,6 +75,8 @@ def train(alpha=5e-5):
         )
 
     with tf.Session(graph=graph) as session:
+        tf.summary.scalar('loss', loss)
+        tf.summary.scalar('accuracy', accuracy)
         merged = tf.summary.merge_all()
         writer = tf.summary.FileWriter(graph_log_dir, session.graph)
         tf.global_variables_initializer().run()

@@ -9,7 +9,19 @@ Programing Language: Python2.7
 Library: Tensorflow-1.0 + pillow + scikit-learn-0.18
 
 ## Status
-building...
+finished
 
+## Steps
+### 1.Train the model.
+``` shell
+cd trainer
+python train.py
+```
+### 2.Test the model.
+``` shell
+cd trainer
+python test_model.py
+```
+![](./screenshot.png)
 ## Technique
-based on Google’s [Multi-digit Number Recognition from Street View](http://static.googleusercontent.com/media/research.google.com/en//pubs/archive/42241.pdf)
+Based on this post: [Number plate recognition with Tensorflow](http://matthewearl.github.io/2016/05/06/cnn-anpr/)

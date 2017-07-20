@@ -78,7 +78,7 @@ def train():
 
                 save_model(step)  # save the model every 50 step
 
-                if test_accuracy >= 0.90:
+                if test_accuracy >= 0.92 or step >= 10000:  # stop when accuracy above 92%
                     save_model(step)
                     break
 

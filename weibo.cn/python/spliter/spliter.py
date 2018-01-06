@@ -90,12 +90,16 @@ class Spliter:
         return out
 
     def __save_image(self, formatted_image):
+        if formatted_image is None:
+            return
         fname = str(uuid.uuid4())
         path = os.path.join(self.save_dir, fname)+'.png'
         cv2.imwrite(path, formatted_image)
 
 
 def is_black(i, j, image):
+    if j < 0 or j > (image.shape[0] - 1):
+        return False
     b = image[j, i][0]
     g = image[j, i][1]
     r = image[j, i][2]
@@ -115,6 +119,8 @@ def clear_color(image):
 
 
 def get_horizontal_noise_line_width(image, now_height, now_width):
+    if now_height < 0 or now_height > (image.shape[0] - 1):
+        return False
     end_width = now_width
     while end_width < image.shape[1] \
             and image[now_height][end_width][0] < 12 \

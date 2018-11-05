@@ -24,8 +24,9 @@ CAPTCHA from http://login.weibo.cn/login/.
 CAPTCHA of http://passport.jikexueyuan.com/sso/verify
 
 ### Weibo.com[[python3](./weibo.com)]
-![](./weibo.com/weibo.com.png)
+![](./weibo.com/weibo.com.png)  
 CAPTCHA of [http://login.sina.com.cn/cgi/pin.php?r=8787878&s=0](http://login.sina.com.cn/cgi/pin.php?r=8787878&s=0)
+
 
 ## License
 MIT
